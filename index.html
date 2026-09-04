@@ -3,158 +3,168 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Student Name Picker</title>
 
   <style>
-    :root {
-      --bg: #0f172a;
-      --panel: #172033;
-      --panel-light: #1e293b;
-      --border: #334155;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --accent: #3b82f6;
-      --accent-hover: #2563eb;
-      --green: #22c55e;
-      --green-hover: #16a34a;
-      --yellow: #f59e0b;
-      --yellow-hover: #d97706;
-      --red: #ef4444;
-      --red-hover: #dc2626;
-    }
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top, #18233a 0%, var(--bg) 55%);
-      color: var(--text);
-      font-family:
-        Inter, system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
-    }
-
-    button,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
+      padding: 30px;
+      background: #f4f6f8;
+      color: #202124;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .app {
-      width: min(1100px, 94%);
+      max-width: 1050px;
       margin: 0 auto;
-      padding: 32px 0 50px;
     }
 
-    /* HEADER */
+    /* -----------------------------
+       HEADER
+    ------------------------------ */
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 28px;
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
     }
 
-    .title-group h1 {
+    .header h1 {
       margin: 0;
-      font-size: clamp(1.7rem, 4vw, 2.5rem);
-      letter-spacing: -0.04em;
+      font-size: 34px;
+      font-weight: 700;
     }
 
-    .title-group p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 0.95rem;
+    .header p {
+      margin: 8px 0 0;
+      color: #5f6368;
+      font-size: 16px;
     }
 
-    .top-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    /* -----------------------------
+       CARDS
+    ------------------------------ */
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
-    /* PERIODS */
+    .section-title {
+      text-align: center;
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 700;
+    }
 
-    .periods {
+    /* -----------------------------
+       BUTTONS
+    ------------------------------ */
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 13px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #e8eaed;
+      color: #202124;
+      transition:
+        background 0.15s ease,
+        transform 0.1s ease,
+        box-shadow 0.15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: #dadce0;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .button-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 36px;
     }
 
-    .period-btn {
-      min-width: 90px;
-      padding: 11px 18px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--muted);
-      font-weight: 700;
-      transition: 0.15s ease;
-    }
-
-    .period-btn:hover {
+    .period-button.selected {
+      background: #1a73e8;
       color: white;
-      border-color: #64748b;
     }
 
-    .period-btn.active {
+    .primary-button {
+      background: #1a73e8;
       color: white;
-      background: var(--accent);
-      border-color: var(--accent);
-      box-shadow: 0 5px 20px rgba(59, 130, 246, 0.25);
+      font-weight: bold;
     }
 
-    /* PICKER */
-
-    .picker-panel {
-      background: rgba(23, 32, 51, 0.78);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: clamp(24px, 5vw, 54px);
-      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(8px);
+    .primary-button:hover:not(:disabled) {
+      background: #1765cc;
     }
 
-    .period-label {
+    .remove-button {
+      background: #188038;
+      color: white;
+      font-weight: bold;
+    }
+
+    .remove-button:hover {
+      background: #137333;
+    }
+
+    .keep-button {
+      background: #e8eaed;
+      color: #202124;
+      font-weight: bold;
+    }
+
+    .utility-button {
+      background: #e8eaed;
+    }
+
+    /* -----------------------------
+       PICKER DISPLAY
+    ------------------------------ */
+
+    .picker-card {
       text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+      padding: 34px 22px;
+    }
+
+    .current-period-label {
+      color: #5f6368;
+      font-size: 17px;
       margin-bottom: 18px;
     }
 
     .name-display {
-      min-height: 210px;
+      min-height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 30px;
-      background: #0b1220;
-      border: 2px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
+      padding: 24px;
+      border-radius: 16px;
+      background: #f8f9fa;
+      border: 1px solid #dadce0;
+      margin-bottom: 22px;
     }
 
     .student-name {
-      font-weight: 850;
-      font-size: clamp(2.2rem, 7vw, 5.7rem);
+      font-size: clamp(42px, 8vw, 88px);
+      font-weight: 700;
       line-height: 1.05;
-      letter-spacing: -0.04em;
-      word-break: break-word;
       transition:
         transform 0.08s ease,
         opacity 0.08s ease;
@@ -162,157 +172,73 @@
 
     .student-name.cycling {
       transform: scale(0.97);
-      opacity: 0.78;
+      opacity: 0.7;
     }
 
-    .empty-message {
-      color: var(--muted);
-      font-size: clamp(1.2rem, 3vw, 1.6rem);
-      font-weight: 600;
-    }
-
-    /* STATUS */
+    /* -----------------------------
+       COUNTS
+    ------------------------------ */
 
     .status-row {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
-      gap: 14px;
-      margin: 22px 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-      font-weight: 600;
+      gap: 12px;
+      color: #5f6368;
+      margin-bottom: 22px;
+      font-size: 15px;
     }
 
-    .status-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #475569;
+    .status-divider {
+      color: #bdc1c6;
     }
 
-    /* MAIN BUTTONS */
+    /* -----------------------------
+       DECISION AREA
+    ------------------------------ */
 
-    .main-actions {
+    .spin-area,
+    .decision-actions {
       display: flex;
       justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 12px;
-      padding: 13px 20px;
-      font-weight: 800;
-      transition:
-        transform 0.12s ease,
-        background 0.12s ease,
-        opacity 0.12s ease;
-    }
-
-    .btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-    }
-
-    .btn:disabled {
-      cursor: not-allowed;
-      opacity: 0.4;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-      min-width: 220px;
-      font-size: 1.15rem;
-      padding: 16px 28px;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: var(--accent-hover);
-    }
-
-    .btn-remove {
-      background: var(--green);
-      color: #052e16;
-      min-width: 190px;
-    }
-
-    .btn-remove:hover {
-      background: var(--green-hover);
-      color: white;
-    }
-
-    .btn-keep {
-      background: var(--yellow);
-      color: #422006;
-      min-width: 190px;
-    }
-
-    .btn-keep:hover {
-      background: var(--yellow-hover);
-      color: white;
-    }
-
-    .btn-secondary {
-      color: var(--text);
-      background: var(--panel-light);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover:not(:disabled) {
-      background: #273449;
     }
 
     .decision-actions {
       display: none;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 8px;
     }
 
     .decision-actions.visible {
       display: flex;
     }
 
-    /* TOAST */
-
-    .toast {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translate(-50%, 20px);
-      background: #020617;
-      border: 1px solid #334155;
-      color: white;
-      padding: 11px 18px;
-      border-radius: 999px;
-      font-weight: 650;
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.2s ease;
-      z-index: 9999;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+    .large-action {
+      min-width: 220px;
+      padding: 16px 28px;
+      font-size: 18px;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
+    /* -----------------------------
+       TOOLBAR
+    ------------------------------ */
+
+    .toolbar-card {
+      padding: 18px 22px;
     }
 
-    /* MODAL */
+    /* -----------------------------
+       MODALS
+    ------------------------------ */
 
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(2, 6, 23, 0.8);
-      backdrop-filter: blur(5px);
       display: none;
       align-items: center;
       justify-content: center;
+      background: rgba(32, 33, 36, 0.55);
       padding: 20px;
       z-index: 1000;
     }
@@ -325,60 +251,61 @@
       width: min(680px, 100%);
       max-height: 90vh;
       overflow-y: auto;
-      background: #111827;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
-      padding: 22px 24px;
-      border-bottom: 1px solid var(--border);
+      padding: 20px 22px;
+      border-bottom: 1px solid #dadce0;
     }
 
     .modal-header h2 {
       margin: 0;
-      font-size: 1.4rem;
+      font-size: 22px;
     }
 
-    .close-btn {
-      border: 0;
+    .close-button {
       background: transparent;
-      color: var(--muted);
-      font-size: 1.8rem;
-      line-height: 1;
+      padding: 6px 10px;
+      font-size: 26px;
+      color: #5f6368;
+    }
+
+    .close-button:hover {
+      background: #f1f3f4;
     }
 
     .modal-body {
-      padding: 24px;
+      padding: 22px;
     }
 
     .modal-description {
-      margin: 0 0 18px;
-      color: var(--muted);
-      line-height: 1.6;
+      margin-top: 0;
+      color: #5f6368;
+      line-height: 1.5;
     }
 
     textarea {
       width: 100%;
       min-height: 330px;
       resize: vertical;
-      background: #090f1c;
-      color: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      line-height: 1.6;
+      border: 1px solid #dadce0;
+      border-radius: 10px;
+      padding: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
       outline: none;
     }
 
     textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.15);
     }
 
     .modal-footer {
@@ -386,60 +313,106 @@
       justify-content: flex-end;
       flex-wrap: wrap;
       gap: 10px;
-      padding: 18px 24px 24px;
+      padding: 0 22px 22px;
     }
 
-    /* POOL MODAL */
+    /* -----------------------------
+       POOL LIST
+    ------------------------------ */
 
     .pool-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
       gap: 8px;
     }
 
     .pool-name {
-      background: #0b1220;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 9px 12px;
-      color: #cbd5e1;
+      background: #f8f9fa;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      padding: 10px 12px;
     }
 
-    /* RESPONSIVE */
+    .empty-message {
+      text-align: center;
+      color: #5f6368;
+      padding: 30px;
+      font-size: 18px;
+    }
 
-    @media (max-width: 700px) {
-      .app {
-        padding-top: 20px;
+    /* -----------------------------
+       TOAST
+    ------------------------------ */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translate(-50%, 15px);
+      background: #202124;
+      color: white;
+      padding: 11px 18px;
+      border-radius: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.2s ease;
+      z-index: 2000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* -----------------------------
+       MOBILE
+    ------------------------------ */
+
+    @media (max-width: 600px) {
+
+      body {
+        padding: 12px;
       }
 
-      .topbar {
-        align-items: flex-start;
-        flex-direction: column;
+      .header {
+        margin-bottom: 16px;
       }
 
-      .top-actions {
+      .header h1 {
+        font-size: 28px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .picker-card {
+        padding: 26px 12px;
+      }
+
+      .button-row {
+        gap: 8px;
+      }
+
+      .button-row button {
+        flex-grow: 1;
+      }
+
+      .period-button {
+        min-width: 70px;
+      }
+
+      .large-action {
         width: 100%;
       }
 
-      .top-actions .btn {
-        flex: 1;
-      }
-
-      .picker-panel {
-        padding: 20px;
+      .decision-actions button {
+        flex: 1 1 180px;
       }
 
       .name-display {
         min-height: 180px;
-        padding: 20px;
-      }
-
-      .period-btn {
-        min-width: 65px;
-      }
-
-      .decision-actions .btn {
-        flex: 1 1 180px;
       }
     }
   </style>
@@ -449,44 +422,41 @@
 
   <main class="app">
 
-    <div class="topbar">
+    <!-- HEADER -->
 
-      <div class="title-group">
-        <h1>Student Name Picker</h1>
-        <p>Random selection without repeats — unless you want them.</p>
-      </div>
-
-      <div class="top-actions">
-        <button class="btn btn-secondary" id="rosterButton">
-          Edit Roster
-        </button>
-
-        <button class="btn btn-secondary" id="poolButton">
-          View Pool
-        </button>
-
-        <button class="btn btn-secondary" id="undoButton">
-          Undo
-        </button>
-
-        <button class="btn btn-secondary" id="resetButton">
-          Reset Pool
-        </button>
-      </div>
-
+    <div class="header">
+      <h1>Student Name Picker</h1>
+      <p>Random student selection</p>
     </div>
 
 
-    <!-- PERIOD BUTTONS -->
-    <div class="periods" id="periodButtons"></div>
+    <!-- PERIOD CARD -->
+
+    <section class="card">
+
+      <h2 class="section-title">
+        Period
+      </h2>
+
+      <div
+        class="button-row"
+        id="periodButtons"
+      ></div>
+
+    </section>
 
 
-    <!-- PICKER -->
-    <section class="picker-panel">
+    <!-- PICKER CARD -->
 
-      <div class="period-label" id="periodLabel">
+    <section class="card picker-card">
+
+      <div
+        class="current-period-label"
+        id="periodLabel"
+      >
         Period 1
       </div>
+
 
       <div class="name-display">
 
@@ -500,20 +470,23 @@
       </div>
 
 
-      <!-- STATUS -->
       <div class="status-row">
 
         <span id="remainingCount">
           0 remaining
         </span>
 
-        <span class="status-dot"></span>
+        <span class="status-divider">
+          •
+        </span>
 
         <span id="selectedCount">
           0 removed
         </span>
 
-        <span class="status-dot"></span>
+        <span class="status-divider">
+          •
+        </span>
 
         <span id="classSize">
           0 students
@@ -522,11 +495,13 @@
       </div>
 
 
-      <!-- SPIN BUTTON -->
-      <div class="main-actions" id="spinArea">
+      <div
+        class="spin-area"
+        id="spinArea"
+      >
 
         <button
-          class="btn btn-primary"
+          class="primary-button large-action"
           id="spinButton"
         >
           PICK A STUDENT
@@ -535,24 +510,62 @@
       </div>
 
 
-      <!-- AFTER NAME IS SELECTED -->
       <div
         class="decision-actions"
         id="decisionActions"
       >
 
         <button
-          class="btn btn-remove"
+          class="remove-button large-action"
           id="removeButton"
         >
           Remove From Pool
         </button>
 
         <button
-          class="btn btn-keep"
+          class="keep-button large-action"
           id="keepButton"
         >
           Keep In Pool
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- CONTROLS CARD -->
+
+    <section class="card toolbar-card">
+
+      <div class="button-row">
+
+        <button
+          class="utility-button"
+          id="rosterButton"
+        >
+          Edit Roster
+        </button>
+
+        <button
+          class="utility-button"
+          id="poolButton"
+        >
+          View Pool
+        </button>
+
+        <button
+          class="utility-button"
+          id="undoButton"
+        >
+          ↶ Undo
+        </button>
+
+        <button
+          class="utility-button"
+          id="resetButton"
+        >
+          ↻ Reset Pool
         </button>
 
       </div>
@@ -563,6 +576,7 @@
 
 
   <!-- ROSTER MODAL -->
+
   <div
     class="modal-overlay"
     id="rosterModal"
@@ -571,23 +585,27 @@
     <div class="modal">
 
       <div class="modal-header">
+
         <h2 id="rosterModalTitle">
           Period 1 Roster
         </h2>
 
         <button
-          class="close-btn"
+          class="close-button"
           id="closeRosterModal"
         >
-          &times;
+          ×
         </button>
+
       </div>
+
 
       <div class="modal-body">
 
         <p class="modal-description">
-          Paste one student name per line. You only need to do this once.
-          The roster will be saved in this browser.
+          Paste one student name per line.
+          Your roster will be saved automatically
+          in this browser.
         </p>
 
         <textarea
@@ -600,17 +618,15 @@ James Martinez"
 
       </div>
 
+
       <div class="modal-footer">
 
-        <button
-          class="btn btn-secondary"
-          id="cancelRosterButton"
-        >
+        <button id="cancelRosterButton">
           Cancel
         </button>
 
         <button
-          class="btn btn-primary"
+          class="primary-button"
           id="saveRosterButton"
         >
           Save Roster
@@ -623,7 +639,8 @@ James Martinez"
   </div>
 
 
-  <!-- VIEW POOL MODAL -->
+  <!-- POOL MODAL -->
+
   <div
     class="modal-overlay"
     id="poolModal"
@@ -638,13 +655,14 @@ James Martinez"
         </h2>
 
         <button
-          class="close-btn"
+          class="close-button"
           id="closePoolModal"
         >
-          &times;
+          ×
         </button>
 
       </div>
+
 
       <div class="modal-body">
 
@@ -661,22 +679,42 @@ James Martinez"
 
 
   <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+
+  <div
+    class="toast"
+    id="toast"
+  ></div>
 
 
   <script>
-    /******************************************************
-     * STUDENT NAME PICKER
-     ******************************************************/
 
-    const PERIODS = ["1", "2", "3", "5", "6"];
+    /* ==================================================
+       STUDENT NAME PICKER
+    ================================================== */
 
-    const STORAGE_KEY = "studentNamePicker_v1";
+    const PERIODS = [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+    ];
+
+    /*
+      Keep the same storage key so any rosters
+      you already entered in Periods 1, 2, 3,
+      5, or 6 will remain saved.
+    */
+
+    const STORAGE_KEY =
+      "studentNamePicker_v1";
 
 
-    /******************************************************
-     * DEFAULT DATA
-     ******************************************************/
+    /* ==================================================
+       DEFAULT STATE
+    ================================================== */
 
     function createDefaultState() {
 
@@ -692,30 +730,41 @@ James Martinez"
 
       });
 
+
       return {
         currentPeriod: "1",
         periods: periods
       };
+
     }
 
 
-    /******************************************************
-     * LOAD / SAVE
-     ******************************************************/
+    /* ==================================================
+       SAVE / LOAD
+    ================================================== */
 
     function loadState() {
 
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved =
+        localStorage.getItem(STORAGE_KEY);
+
 
       if (!saved) {
         return createDefaultState();
       }
 
+
       try {
 
-        const parsed = JSON.parse(saved);
+        const parsed =
+          JSON.parse(saved);
 
-        // Make sure all periods exist.
+
+        if (!parsed.periods) {
+          parsed.periods = {};
+        }
+
+
         PERIODS.forEach(period => {
 
           if (!parsed.periods[period]) {
@@ -730,15 +779,31 @@ James Martinez"
 
         });
 
+
+        if (
+          !PERIODS.includes(
+            parsed.currentPeriod
+          )
+        ) {
+          parsed.currentPeriod = "1";
+        }
+
+
         return parsed;
 
-      } catch (error) {
+      }
 
-        console.error("Could not load saved data:", error);
+      catch (error) {
+
+        console.error(
+          "Unable to load saved data:",
+          error
+        );
 
         return createDefaultState();
 
       }
+
     }
 
 
@@ -755,105 +820,159 @@ James Martinez"
     let state = loadState();
 
 
-    /******************************************************
-     * ELEMENT REFERENCES
-     ******************************************************/
+    /* ==================================================
+       ELEMENTS
+    ================================================== */
 
     const periodButtons =
-      document.getElementById("periodButtons");
+      document.getElementById(
+        "periodButtons"
+      );
 
     const periodLabel =
-      document.getElementById("periodLabel");
+      document.getElementById(
+        "periodLabel"
+      );
 
     const studentName =
-      document.getElementById("studentName");
+      document.getElementById(
+        "studentName"
+      );
 
     const spinButton =
-      document.getElementById("spinButton");
+      document.getElementById(
+        "spinButton"
+      );
 
     const spinArea =
-      document.getElementById("spinArea");
+      document.getElementById(
+        "spinArea"
+      );
 
     const decisionActions =
-      document.getElementById("decisionActions");
+      document.getElementById(
+        "decisionActions"
+      );
 
     const removeButton =
-      document.getElementById("removeButton");
+      document.getElementById(
+        "removeButton"
+      );
 
     const keepButton =
-      document.getElementById("keepButton");
+      document.getElementById(
+        "keepButton"
+      );
 
     const remainingCount =
-      document.getElementById("remainingCount");
+      document.getElementById(
+        "remainingCount"
+      );
 
     const selectedCount =
-      document.getElementById("selectedCount");
+      document.getElementById(
+        "selectedCount"
+      );
 
     const classSize =
-      document.getElementById("classSize");
+      document.getElementById(
+        "classSize"
+      );
 
     const rosterButton =
-      document.getElementById("rosterButton");
+      document.getElementById(
+        "rosterButton"
+      );
 
     const poolButton =
-      document.getElementById("poolButton");
+      document.getElementById(
+        "poolButton"
+      );
 
     const undoButton =
-      document.getElementById("undoButton");
+      document.getElementById(
+        "undoButton"
+      );
 
     const resetButton =
-      document.getElementById("resetButton");
+      document.getElementById(
+        "resetButton"
+      );
 
     const rosterModal =
-      document.getElementById("rosterModal");
+      document.getElementById(
+        "rosterModal"
+      );
 
     const rosterModalTitle =
-      document.getElementById("rosterModalTitle");
+      document.getElementById(
+        "rosterModalTitle"
+      );
 
     const rosterInput =
-      document.getElementById("rosterInput");
+      document.getElementById(
+        "rosterInput"
+      );
 
     const saveRosterButton =
-      document.getElementById("saveRosterButton");
+      document.getElementById(
+        "saveRosterButton"
+      );
 
     const cancelRosterButton =
-      document.getElementById("cancelRosterButton");
+      document.getElementById(
+        "cancelRosterButton"
+      );
 
     const closeRosterModal =
-      document.getElementById("closeRosterModal");
+      document.getElementById(
+        "closeRosterModal"
+      );
 
     const poolModal =
-      document.getElementById("poolModal");
+      document.getElementById(
+        "poolModal"
+      );
 
     const poolModalTitle =
-      document.getElementById("poolModalTitle");
+      document.getElementById(
+        "poolModalTitle"
+      );
 
     const poolList =
-      document.getElementById("poolList");
+      document.getElementById(
+        "poolList"
+      );
 
     const closePoolModal =
-      document.getElementById("closePoolModal");
+      document.getElementById(
+        "closePoolModal"
+      );
 
     const toast =
-      document.getElementById("toast");
+      document.getElementById(
+        "toast"
+      );
 
 
-    /******************************************************
-     * TEMPORARY PICKER STATE
-     ******************************************************/
+    /* ==================================================
+       TEMPORARY SELECTION STATE
+    ================================================== */
 
     let isSpinning = false;
 
     let pendingStudent = null;
 
 
-    /******************************************************
-     * HELPERS
-     ******************************************************/
+    /* ==================================================
+       HELPERS
+    ================================================== */
 
     function currentData() {
 
-      return state.periods[state.currentPeriod];
+      return state.periods[
+        state.currentPeriod
+      ];
 
     }
 
@@ -861,7 +980,9 @@ James Martinez"
     function randomItem(array) {
 
       return array[
-        Math.floor(Math.random() * array.length)
+        Math.floor(
+          Math.random() * array.length
+        )
       ];
 
     }
@@ -869,9 +990,9 @@ James Martinez"
 
     function wait(milliseconds) {
 
-      return new Promise(resolve =>
-        setTimeout(resolve, milliseconds)
-      );
+      return new Promise(resolve => {
+        setTimeout(resolve, milliseconds);
+      });
 
     }
 
@@ -879,121 +1000,182 @@ James Martinez"
     function showToast(message) {
 
       toast.textContent = message;
+
       toast.classList.add("show");
 
-      clearTimeout(showToast.timeout);
 
-      showToast.timeout = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 1800);
+      clearTimeout(
+        showToast.timeout
+      );
+
+
+      showToast.timeout =
+        setTimeout(() => {
+
+          toast.classList.remove(
+            "show"
+          );
+
+        }, 1800);
 
     }
 
 
-    /******************************************************
-     * PERIOD BUTTONS
-     ******************************************************/
+    /* ==================================================
+       PERIOD BUTTONS
+    ================================================== */
 
     function buildPeriodButtons() {
 
       periodButtons.innerHTML = "";
 
+
       PERIODS.forEach(period => {
 
         const button =
-          document.createElement("button");
+          document.createElement(
+            "button"
+          );
 
-        button.className = "period-btn";
 
-        button.textContent = `Period ${period}`;
+        button.className =
+          "period-button";
 
-        if (period === state.currentPeriod) {
-          button.classList.add("active");
+        button.textContent =
+          `Period ${period}`;
+
+
+        if (
+          period ===
+          state.currentPeriod
+        ) {
+
+          button.classList.add(
+            "selected"
+          );
+
         }
 
-        button.addEventListener("click", () => {
 
-          if (isSpinning) {
-            return;
+        button.addEventListener(
+          "click",
+          () => {
+
+            if (isSpinning) {
+              return;
+            }
+
+
+            state.currentPeriod =
+              period;
+
+            pendingStudent =
+              null;
+
+
+            saveState();
+
+            buildPeriodButtons();
+
+            updateUI();
+
           }
+        );
 
-          state.currentPeriod = period;
 
-          pendingStudent = null;
-
-          saveState();
-
-          buildPeriodButtons();
-
-          updateUI();
-
-        });
-
-        periodButtons.appendChild(button);
+        periodButtons.appendChild(
+          button
+        );
 
       });
 
     }
 
 
-    /******************************************************
-     * UPDATE UI
-     ******************************************************/
+    /* ==================================================
+       UPDATE DISPLAY
+    ================================================== */
 
     function updateUI() {
 
-      const data = currentData();
+      const data =
+        currentData();
 
-      const total = data.masterRoster.length;
+      const total =
+        data.masterRoster.length;
 
-      const remaining = data.pool.length;
+      const remaining =
+        data.pool.length;
 
-      const removed = Math.max(
-        total - remaining,
-        0
-      );
+      const removed =
+        Math.max(
+          total - remaining,
+          0
+        );
+
 
       periodLabel.textContent =
         `Period ${state.currentPeriod}`;
 
+
       remainingCount.textContent =
         `${remaining} remaining`;
+
 
       selectedCount.textContent =
         `${removed} removed`;
 
+
       classSize.textContent =
-        `${total} student${total === 1 ? "" : "s"}`;
+        `${total} student${
+          total === 1 ? "" : "s"
+        }`;
+
 
       undoButton.disabled =
         data.history.length === 0;
 
+
       resetButton.disabled =
         total === 0;
 
+
       poolButton.disabled =
         total === 0;
+
 
       if (isSpinning) {
         return;
       }
 
+
       if (pendingStudent) {
 
-        spinArea.style.display = "none";
+        spinArea.style.display =
+          "none";
 
-        decisionActions.classList.add("visible");
+
+        decisionActions.classList.add(
+          "visible"
+        );
+
 
         studentName.textContent =
           pendingStudent;
+
 
         return;
 
       }
 
-      decisionActions.classList.remove("visible");
 
-      spinArea.style.display = "flex";
+      decisionActions.classList.remove(
+        "visible"
+      );
+
+
+      spinArea.style.display =
+        "flex";
 
 
       if (total === 0) {
@@ -1001,10 +1183,14 @@ James Martinez"
         studentName.textContent =
           "Add a roster to begin";
 
+
         spinButton.textContent =
           "ADD ROSTER";
 
-        spinButton.disabled = false;
+
+        spinButton.disabled =
+          false;
+
 
         return;
 
@@ -1016,10 +1202,14 @@ James Martinez"
         studentName.textContent =
           "Everyone has been selected";
 
+
         spinButton.textContent =
           "RESET CLASS";
 
-        spinButton.disabled = false;
+
+        spinButton.disabled =
+          false;
+
 
         return;
 
@@ -1029,27 +1219,30 @@ James Martinez"
       studentName.textContent =
         "Ready?";
 
+
       spinButton.textContent =
         "PICK A STUDENT";
 
-      spinButton.disabled = false;
+
+      spinButton.disabled =
+        false;
 
     }
 
 
-    /******************************************************
-     * SPIN
-     ******************************************************/
+    /* ==================================================
+       PICK STUDENT
+    ================================================== */
 
     async function spin() {
 
-      const data = currentData();
+      const data =
+        currentData();
 
-      /*
-       * No roster yet.
-       */
 
-      if (data.masterRoster.length === 0) {
+      if (
+        data.masterRoster.length === 0
+      ) {
 
         openRosterEditor();
 
@@ -1058,11 +1251,9 @@ James Martinez"
       }
 
 
-      /*
-       * Everyone already removed.
-       */
-
-      if (data.pool.length === 0) {
+      if (
+        data.pool.length === 0
+      ) {
 
         resetPool();
 
@@ -1081,52 +1272,68 @@ James Martinez"
 
       isSpinning = true;
 
-      spinButton.disabled = true;
+      spinButton.disabled =
+        true;
 
 
       /*
-       * Decide winner BEFORE animation.
-       */
+        Select the actual winner before
+        animation begins.
+      */
 
       const winner =
         randomItem(data.pool);
 
 
       /*
-       * Animation timings.
-       *
-       * Starts quickly and slows down,
-       * giving it a slot-machine feeling.
-       */
+        Rapid at first, then slows.
+
+        Total animation is roughly
+        1.5–2 seconds.
+      */
 
       const timings = [
-        45, 45, 50, 50, 55,
-        55, 60, 65, 70, 75,
-        85, 95, 110, 125,
-        145, 170, 200
+        40,
+        40,
+        45,
+        45,
+        50,
+        55,
+        60,
+        65,
+        75,
+        85,
+        100,
+        115,
+        135,
+        160,
+        190
       ];
 
 
       let previousName = null;
 
 
-      for (let i = 0; i < timings.length; i++) {
+      for (
+        let i = 0;
+        i < timings.length;
+        i++
+      ) {
 
         let cyclingName =
           randomItem(data.pool);
 
 
-        /*
-         * Try not to display the same
-         * cycling name twice in a row.
-         */
-
-        if (data.pool.length > 1) {
+        if (
+          data.pool.length > 1
+        ) {
 
           let safety = 0;
 
+
           while (
-            cyclingName === previousName &&
+            cyclingName ===
+              previousName &&
             safety < 10
           ) {
 
@@ -1140,38 +1347,44 @@ James Martinez"
         }
 
 
-        studentName.classList.add("cycling");
+        studentName.classList.add(
+          "cycling"
+        );
+
 
         studentName.textContent =
           cyclingName;
+
 
         previousName =
           cyclingName;
 
 
-        await wait(timings[i]);
+        await wait(
+          timings[i]
+        );
 
 
-        studentName.classList.remove("cycling");
+        studentName.classList.remove(
+          "cycling"
+        );
 
       }
 
 
-      /*
-       * Brief suspense before reveal.
-       */
-
-      await wait(120);
+      await wait(100);
 
 
       studentName.textContent =
         winner;
 
+
       pendingStudent =
         winner;
 
 
-      isSpinning = false;
+      isSpinning =
+        false;
 
 
       updateUI();
@@ -1179,9 +1392,9 @@ James Martinez"
     }
 
 
-    /******************************************************
-     * REMOVE STUDENT
-     ******************************************************/
+    /* ==================================================
+       REMOVE FROM POOL
+    ================================================== */
 
     function removePendingStudent() {
 
@@ -1189,24 +1402,29 @@ James Martinez"
         return;
       }
 
-      const data = currentData();
 
-      /*
-       * Save complete previous pool
-       * so Undo is completely reliable.
-       */
+      const data =
+        currentData();
+
 
       data.history.push({
+
         action: "remove",
-        student: pendingStudent,
-        previousPool: [...data.pool]
+
+        student:
+          pendingStudent,
+
+        previousPool:
+          [...data.pool]
+
       });
 
 
       data.pool =
         data.pool.filter(
           student =>
-            student !== pendingStudent
+            student !==
+            pendingStudent
         );
 
 
@@ -1214,7 +1432,8 @@ James Martinez"
         pendingStudent;
 
 
-      pendingStudent = null;
+      pendingStudent =
+        null;
 
 
       saveState();
@@ -1229,9 +1448,9 @@ James Martinez"
     }
 
 
-    /******************************************************
-     * KEEP STUDENT
-     ******************************************************/
+    /* ==================================================
+       KEEP IN POOL
+    ================================================== */
 
     function keepPendingStudent() {
 
@@ -1239,13 +1458,21 @@ James Martinez"
         return;
       }
 
-      const data = currentData();
+
+      const data =
+        currentData();
 
 
       data.history.push({
+
         action: "keep",
-        student: pendingStudent,
-        previousPool: [...data.pool]
+
+        student:
+          pendingStudent,
+
+        previousPool:
+          [...data.pool]
+
       });
 
 
@@ -1253,7 +1480,8 @@ James Martinez"
         pendingStudent;
 
 
-      pendingStudent = null;
+      pendingStudent =
+        null;
 
 
       saveState();
@@ -1268,22 +1496,30 @@ James Martinez"
     }
 
 
-    /******************************************************
-     * RESET POOL
-     ******************************************************/
+    /* ==================================================
+       RESET POOL
+    ================================================== */
 
     function resetPool() {
 
-      const data = currentData();
+      const data =
+        currentData();
 
-      if (data.masterRoster.length === 0) {
+
+      if (
+        data.masterRoster.length === 0
+      ) {
         return;
       }
 
 
       data.history.push({
+
         action: "reset",
-        previousPool: [...data.pool]
+
+        previousPool:
+          [...data.pool]
+
       });
 
 
@@ -1291,7 +1527,8 @@ James Martinez"
         [...data.masterRoster];
 
 
-      pendingStudent = null;
+      pendingStudent =
+        null;
 
 
       saveState();
@@ -1306,9 +1543,9 @@ James Martinez"
     }
 
 
-    /******************************************************
-     * UNDO
-     ******************************************************/
+    /* ==================================================
+       UNDO
+    ================================================== */
 
     function undoLastAction() {
 
@@ -1317,7 +1554,9 @@ James Martinez"
       }
 
 
-      const data = currentData();
+      const data =
+        currentData();
+
 
       const lastAction =
         data.history.pop();
@@ -1325,23 +1564,21 @@ James Martinez"
 
       if (!lastAction) {
 
-        showToast("Nothing to undo");
+        showToast(
+          "Nothing to undo"
+        );
 
         return;
 
       }
 
 
-      /*
-       * Restore exactly what the pool
-       * looked like before that action.
-       */
-
       data.pool =
         [...lastAction.previousPool];
 
 
-      pendingStudent = null;
+      pendingStudent =
+        null;
 
 
       saveState();
@@ -1349,19 +1586,29 @@ James Martinez"
       updateUI();
 
 
-      if (lastAction.action === "remove") {
+      if (
+        lastAction.action ===
+        "remove"
+      ) {
 
         showToast(
           `${lastAction.student} returned to pool`
         );
 
-      } else if (lastAction.action === "reset") {
+      }
+
+      else if (
+        lastAction.action ===
+        "reset"
+      ) {
 
         showToast(
           "Reset undone"
         );
 
-      } else {
+      }
+
+      else {
 
         showToast(
           "Last action undone"
@@ -1372,21 +1619,30 @@ James Martinez"
     }
 
 
-    /******************************************************
-     * ROSTER EDITOR
-     ******************************************************/
+    /* ==================================================
+       ROSTER EDITOR
+    ================================================== */
 
     function openRosterEditor() {
 
-      const data = currentData();
+      const data =
+        currentData();
+
 
       rosterModalTitle.textContent =
         `Period ${state.currentPeriod} Roster`;
 
-      rosterInput.value =
-        data.masterRoster.join("\n");
 
-      rosterModal.classList.add("visible");
+      rosterInput.value =
+        data.masterRoster.join(
+          "\n"
+        );
+
+
+      rosterModal.classList.add(
+        "visible"
+      );
+
 
       rosterInput.focus();
 
@@ -1395,49 +1651,58 @@ James Martinez"
 
     function closeRosterEditor() {
 
-      rosterModal.classList.remove("visible");
+      rosterModal.classList.remove(
+        "visible"
+      );
 
     }
 
 
     function saveRoster() {
 
-      /*
-       * Split by lines.
-       */
-
       let names =
         rosterInput.value
+
           .split(/\r?\n/)
-          .map(name => name.trim())
+
+          .map(
+            name =>
+              name.trim()
+          )
+
           .filter(Boolean);
 
 
       /*
-       * Remove exact duplicates.
-       */
+        Remove exact duplicates.
+      */
 
-      names = [...new Set(names)];
+      names =
+        [...new Set(names)];
 
 
-      const data = currentData();
+      const data =
+        currentData();
 
 
       data.masterRoster =
         names;
 
+
       /*
-       * Editing the master roster starts
-       * a fresh selection pool.
-       */
+        Changing roster creates a fresh pool.
+      */
 
       data.pool =
         [...names];
 
-      data.history = [];
+
+      data.history =
+        [];
 
 
-      pendingStudent = null;
+      pendingStudent =
+        null;
 
 
       saveState();
@@ -1454,40 +1719,49 @@ James Martinez"
     }
 
 
-    /******************************************************
-     * VIEW POOL
-     ******************************************************/
+    /* ==================================================
+       VIEW CURRENT POOL
+    ================================================== */
 
     function openPoolViewer() {
 
-      const data = currentData();
+      const data =
+        currentData();
+
 
       poolModalTitle.textContent =
         `Period ${state.currentPeriod} — ${data.pool.length} Remaining`;
 
 
-      poolList.innerHTML = "";
+      poolList.innerHTML =
+        "";
 
 
-      if (data.pool.length === 0) {
+      if (
+        data.pool.length === 0
+      ) {
 
         const message =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
+
 
         message.className =
           "empty-message";
 
+
         message.textContent =
           "No students remain in the pool.";
 
-        poolList.appendChild(message);
 
-      } else {
+        poolList.appendChild(
+          message
+        );
 
-        /*
-         * Alphabetize only for display.
-         * This does not change the actual pool.
-         */
+      }
+
+      else {
 
         const sorted =
           [...data.pool].sort(
@@ -1499,36 +1773,47 @@ James Martinez"
         sorted.forEach(name => {
 
           const item =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           item.className =
             "pool-name";
 
+
           item.textContent =
             name;
 
-          poolList.appendChild(item);
+
+          poolList.appendChild(
+            item
+          );
 
         });
 
       }
 
 
-      poolModal.classList.add("visible");
+      poolModal.classList.add(
+        "visible"
+      );
 
     }
 
 
     function closePoolViewer() {
 
-      poolModal.classList.remove("visible");
+      poolModal.classList.remove(
+        "visible"
+      );
 
     }
 
 
-    /******************************************************
-     * EVENTS
-     ******************************************************/
+    /* ==================================================
+       EVENTS
+    ================================================== */
 
     spinButton.addEventListener(
       "click",
@@ -1596,16 +1881,17 @@ James Martinez"
     );
 
 
-    /*
-     * Click outside modal to close.
-     */
-
     rosterModal.addEventListener(
       "click",
       event => {
 
-        if (event.target === rosterModal) {
+        if (
+          event.target ===
+          rosterModal
+        ) {
+
           closeRosterEditor();
+
         }
 
       }
@@ -1616,8 +1902,13 @@ James Martinez"
       "click",
       event => {
 
-        if (event.target === poolModal) {
+        if (
+          event.target ===
+          poolModal
+        ) {
+
           closePoolViewer();
+
         }
 
       }
@@ -1625,28 +1916,33 @@ James Martinez"
 
 
     /*
-     * SPACEBAR = Pick Student
-     *
-     * Useful while teaching from across
-     * the room using keyboard / remote.
-     */
+      SPACEBAR = Pick Student
+    */
 
     document.addEventListener(
       "keydown",
       event => {
 
         const isTyping =
-          document.activeElement.tagName ===
+          document.activeElement
+            .tagName ===
           "TEXTAREA";
 
+
         if (
-          event.code === "Space" &&
+          event.code ===
+            "Space" &&
           !isTyping &&
-          !rosterModal.classList.contains("visible") &&
-          !poolModal.classList.contains("visible")
+          !rosterModal.classList.contains(
+            "visible"
+          ) &&
+          !poolModal.classList.contains(
+            "visible"
+          )
         ) {
 
           event.preventDefault();
+
 
           if (!pendingStudent) {
             spin();
@@ -1655,13 +1951,13 @@ James Martinez"
         }
 
 
-        /*
-         * ESC closes modals.
-         */
-
-        if (event.key === "Escape") {
+        if (
+          event.key ===
+          "Escape"
+        ) {
 
           closeRosterEditor();
+
           closePoolViewer();
 
         }
@@ -1670,9 +1966,9 @@ James Martinez"
     );
 
 
-    /******************************************************
-     * INITIALIZE
-     ******************************************************/
+    /* ==================================================
+       INITIALIZE
+    ================================================== */
 
     buildPeriodButtons();
 
