@@ -4,17 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Random Name Picker</title>
-  
+  <title>Student Picker</title>
+
   <link rel="icon" type="image/png" href="bjh-logo.png">
 
   <style>
-
-    /* =========================================================
-       SHARED BJH APP STYLE
-       Matches BJH Class Bell Countdown
-    ========================================================= */
-
     * {
       box-sizing: border-box;
     }
@@ -32,9 +26,8 @@
       margin: auto;
     }
 
-
     /* =========================================================
-       STANDARD BJH APP HEADER
+       STANDARD BJH HEADER
     ========================================================= */
 
     .app-header {
@@ -61,9 +54,8 @@
       transform: scaleX(-1);
     }
 
-
     /* =========================================================
-       STANDARD BJH SECTION
+       SHARED SECTIONS
     ========================================================= */
 
     .section {
@@ -83,11 +75,6 @@
       margin-bottom: 12px;
     }
 
-
-    /* =========================================================
-       BUTTONS
-    ========================================================= */
-
     .button-row {
       display: flex;
       gap: 10px;
@@ -98,17 +85,12 @@
     button {
       min-height: 44px;
       font-size: 16px;
-
       border: none;
       border-radius: 10px;
-
       padding: 12px 18px;
-
       cursor: pointer;
-
       background: #e8eaed;
       color: #202124;
-
       transition: .15s;
     }
 
@@ -146,18 +128,44 @@
       background: #137333;
     }
 
+    .small-note {
+      color: #5f6368;
+      font-size: 13px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
 
     /* =========================================================
-       PERIOD SECTION
+       PERIOD BUTTONS
     ========================================================= */
 
     #periodButtons {
       justify-content: flex-start;
     }
 
+    /* =========================================================
+       MODE SELECTOR
+    ========================================================= */
+
+    .mode-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .mode-button {
+      min-height: 64px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .mode-button.selected {
+      background: #1a73e8;
+      color: white;
+    }
 
     /* =========================================================
-       NAME PICKER
+       RANDOM NAME PICKER
     ========================================================= */
 
     .picker-card {
@@ -165,7 +173,7 @@
       padding: 32px 20px;
     }
 
-    #periodName {
+    .period-name {
       font-size: 30px;
       font-weight: 700;
       margin-bottom: 8px;
@@ -179,32 +187,22 @@
 
     .name-display {
       min-height: 220px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       padding: 25px;
-
       background: #f8f9fa;
-
       border: 1px solid #dadce0;
       border-radius: 14px;
-
       margin: 18px 0 20px;
     }
 
     #studentName {
       font-size: clamp(52px, 9vw, 96px);
       font-weight: 700;
-
       line-height: 1.05;
-
       word-break: break-word;
-
-      transition:
-        transform .08s ease,
-        opacity .08s ease;
+      transition: transform .08s ease, opacity .08s ease;
     }
 
     #studentName.cycling {
@@ -212,24 +210,14 @@
       opacity: .70;
     }
 
-
-    /* =========================================================
-       STATUS
-    ========================================================= */
-
     .status-row {
       display: flex;
       justify-content: center;
       align-items: center;
-
       gap: 12px;
-
       flex-wrap: wrap;
-
       color: #5f6368;
-
       font-size: 15px;
-
       margin-bottom: 22px;
     }
 
@@ -237,18 +225,11 @@
       color: #bdc1c6;
     }
 
-
-    /* =========================================================
-       MAIN ACTIONS
-    ========================================================= */
-
     .main-actions,
     .decision-actions {
       display: flex;
       justify-content: center;
-
       gap: 10px;
-
       flex-wrap: wrap;
     }
 
@@ -263,27 +244,204 @@
     .large-button {
       min-width: 220px;
       min-height: 52px;
-
       padding: 14px 25px;
-
       font-size: 18px;
     }
 
-
     /* =========================================================
-       SMALL NOTE
+       GROUP GENERATOR
     ========================================================= */
 
-    .small-note {
-      color: #5f6368;
-
-      font-size: 13px;
-
-      margin-top: 12px;
-
-      line-height: 1.4;
+    #groupsView {
+      display: none;
     }
 
+    .group-builder {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .group-builder-title {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .group-builder-subtitle {
+      color: #777;
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+
+    .group-method-box {
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .group-option-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .group-option-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .group-choice {
+      min-width: 60px;
+      font-weight: 700;
+    }
+
+    .group-choice.selected {
+      background: #1a73e8;
+      color: white;
+    }
+
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 22px 0;
+      color: #9aa0a6;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: #dadce0;
+    }
+
+    .available-students {
+      margin-top: 25px;
+      color: #5f6368;
+      font-size: 14px;
+    }
+
+    .generate-area {
+      margin-top: 20px;
+    }
+
+    /* =========================================================
+       GENERATED GROUPS
+    ========================================================= */
+
+    #groupsResultSection {
+      display: none;
+    }
+
+    .groups-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .groups-toolbar-title {
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .groups-toolbar-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    #groupFullscreenArea {
+      border-radius: 12px;
+    }
+
+    .fullscreen-heading {
+      display: none;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .fullscreen-heading h2 {
+      margin: 0 0 6px;
+      font-size: 32px;
+    }
+
+    .fullscreen-heading div {
+      color: #5f6368;
+      font-size: 17px;
+    }
+
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .group-card {
+      border: 1px solid #dadce0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .group-card-header {
+      background: #f1f3f4;
+      border-bottom: 1px solid #dadce0;
+      padding: 11px 14px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .group-students {
+      padding: 8px 14px 12px;
+    }
+
+    .group-student {
+      padding: 9px 2px;
+      border-bottom: 1px solid #f1f3f4;
+      font-size: 17px;
+    }
+
+    .group-student:last-child {
+      border-bottom: none;
+    }
+
+    /* FULL SCREEN GROUP VIEW */
+
+    #groupFullscreenArea:fullscreen {
+      background: #f4f6f8;
+      padding: 30px;
+      overflow: auto;
+    }
+
+    #groupFullscreenArea:fullscreen .fullscreen-heading {
+      display: block;
+    }
+
+    #groupFullscreenArea:fullscreen .groups-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+
+    #groupFullscreenArea:fullscreen .group-card {
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    #groupFullscreenArea:fullscreen .group-card-header {
+      font-size: 20px;
+      padding: 14px 16px;
+    }
+
+    #groupFullscreenArea:fullscreen .group-student {
+      font-size: 21px;
+      padding: 11px 2px;
+    }
 
     /* =========================================================
        MODALS
@@ -291,18 +449,12 @@
 
     .modal-overlay {
       position: fixed;
-
       inset: 0;
-
       display: none;
-
       align-items: center;
       justify-content: center;
-
       padding: 20px;
-
       background: rgba(32,33,36,.55);
-
       z-index: 1000;
     }
 
@@ -312,44 +464,31 @@
 
     .modal {
       width: min(680px, 100%);
-
       max-height: 90vh;
-
       overflow-y: auto;
-
       background: white;
-
       border-radius: 16px;
-
       box-shadow: 0 8px 30px rgba(0,0,0,.22);
     }
 
     .modal-header {
       display: flex;
-
       justify-content: space-between;
       align-items: center;
-
       padding: 20px 22px;
-
       border-bottom: 1px solid #dadce0;
     }
 
     .modal-header h2 {
       margin: 0;
-
       font-size: 22px;
     }
 
     .close-button {
       min-height: auto;
-
       padding: 5px 10px;
-
       background: transparent;
-
       color: #5f6368;
-
       font-size: 26px;
     }
 
@@ -359,74 +498,52 @@
 
     textarea {
       width: 100%;
-
       min-height: 330px;
-
       resize: vertical;
-
       border: 1px solid #dadce0;
       border-radius: 10px;
-
       padding: 14px;
-
       font-family: Arial, sans-serif;
       font-size: 16px;
       line-height: 1.5;
-
       outline: none;
     }
 
     textarea:focus {
       border-color: #1a73e8;
-
-      box-shadow:
-        0 0 0 2px rgba(26,115,232,.15);
+      box-shadow: 0 0 0 2px rgba(26,115,232,.15);
     }
 
     .modal-footer {
       display: flex;
-
       justify-content: flex-end;
-
       gap: 10px;
-
       flex-wrap: wrap;
-
       padding: 0 22px 22px;
     }
 
-
     /* =========================================================
-       POOL LIST
+       POOL VIEWER
     ========================================================= */
 
     .pool-list {
       display: grid;
-
-      grid-template-columns:
-        repeat(auto-fit, minmax(180px, 1fr));
-
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 8px;
     }
 
     .pool-name {
       padding: 10px 12px;
-
       background: #f8f9fa;
-
       border: 1px solid #dadce0;
-
       border-radius: 8px;
     }
 
     .empty-message {
       color: #5f6368;
-
       text-align: center;
-
       padding: 25px;
     }
-
 
     /* =========================================================
        TOAST
@@ -434,52 +551,35 @@
 
     .toast {
       position: fixed;
-
       left: 50%;
       bottom: 25px;
-
       transform: translate(-50%, 15px);
-
       padding: 11px 18px;
-
       background: #202124;
       color: white;
-
       border-radius: 30px;
-
       opacity: 0;
-
       pointer-events: none;
-
       transition: .2s;
-
       z-index: 2000;
     }
 
     .toast.show {
       opacity: 1;
-
       transform: translate(-50%, 0);
     }
 
-
     /* =========================================================
        MOBILE
-       Matches Bell Countdown header sizing
     ========================================================= */
 
     @media (max-width: 600px) {
-
       body {
         padding: 12px;
       }
 
       button {
         flex-grow: 1;
-      }
-
-      .picker-card {
-        padding: 26px 12px;
       }
 
       .app-header {
@@ -495,6 +595,15 @@
         width: 46px;
       }
 
+      .mode-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .picker-card,
+      .group-builder {
+        padding: 26px 12px;
+      }
+
       .name-display {
         min-height: 180px;
       }
@@ -503,150 +612,219 @@
         width: 100%;
       }
 
-    }
+      .groups-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
 
+      .groups-toolbar-buttons button {
+        flex: 1;
+      }
+    }
   </style>
 </head>
-
 
 <body>
 
 <div class="app">
 
-
-  <!-- =====================================================
-       STANDARD BJH APP HEADER
-  ====================================================== -->
+  <!-- HEADER -->
 
   <div class="app-header">
+    <img src="bjh-logo.png" class="bjh-logo" alt="BJH Bobcat">
 
-    <img
-      src="bjh-logo.png"
-      class="bjh-logo"
-      alt="BJH Bobcat">
+    <h1>Student Picker</h1>
 
-    <h1>Random Name Picker</h1>
-
-    <img
-      src="bjh-logo.png"
-      class="bjh-logo right"
-      alt="BJH Bobcat">
-
+    <img src="bjh-logo.png" class="bjh-logo right" alt="BJH Bobcat">
   </div>
 
-
-
-  <!-- =====================================================
-       PERIODS
-  ====================================================== -->
+  <!-- PERIOD -->
 
   <div class="section">
+    <div class="section-title">Period</div>
 
-    <div class="section-title">
-      Period
-    </div>
-
-    <div
-      id="periodButtons"
-      class="button-row">
-    </div>
-
+    <div id="periodButtons" class="button-row"></div>
   </div>
 
+  <!-- MODE -->
 
+  <div class="section">
+    <div class="section-title">Choose Tool</div>
+
+    <div class="mode-buttons">
+      <button id="pickerModeButton" class="mode-button selected">
+        Pick a Student
+      </button>
+
+      <button id="groupsModeButton" class="mode-button">
+        Make Groups
+      </button>
+    </div>
+  </div>
 
   <!-- =====================================================
-       PICKER
+       RANDOM NAME PICKER
   ====================================================== -->
 
-  <div class="section picker-card">
+  <div id="pickerView">
 
-    <div id="periodName">
-      Period 1
-    </div>
+    <div class="section picker-card">
 
-    <div class="picker-subtitle">
-      Random student selection
-    </div>
+      <div id="periodName" class="period-name">
+        Period 1
+      </div>
 
+      <div class="picker-subtitle">
+        Random student selection
+      </div>
 
-    <div class="name-display">
+      <div class="name-display">
+        <div id="studentName">
+          Ready?
+        </div>
+      </div>
 
-      <div id="studentName">
-        Ready?
+      <div class="status-row">
+        <span id="remainingCount">0 remaining</span>
+
+        <span class="status-divider">•</span>
+
+        <span id="selectedCount">0 removed</span>
+
+        <span class="status-divider">•</span>
+
+        <span id="classSize">0 students</span>
+      </div>
+
+      <div id="spinArea" class="main-actions">
+        <button id="spinButton" class="primary large-button">
+          PICK A STUDENT
+        </button>
+      </div>
+
+      <div id="decisionActions" class="decision-actions">
+        <button id="removeButton" class="remove large-button">
+          Remove From Pool
+        </button>
+
+        <button id="keepButton" class="large-button">
+          Keep In Pool
+        </button>
       </div>
 
     </div>
 
+  </div>
 
-    <div class="status-row">
+  <!-- =====================================================
+       MAKE GROUPS
+  ====================================================== -->
 
-      <span id="remainingCount">
-        0 remaining
-      </span>
+  <div id="groupsView">
 
-      <span class="status-divider">
-        •
-      </span>
+    <div class="section group-builder">
 
-      <span id="selectedCount">
-        0 removed
-      </span>
+      <div id="groupsPeriodName" class="group-builder-title">
+        Make Groups — Period 1
+      </div>
 
-      <span class="status-divider">
-        •
-      </span>
+      <div class="group-builder-subtitle">
+        How would you like to divide the class?
+      </div>
 
-      <span id="classSize">
-        0 students
-      </span>
+      <div class="group-method-box">
+
+        <div class="group-option-title">
+          Group Size
+        </div>
+
+        <div id="groupSizeButtons" class="group-option-buttons">
+          <button class="group-choice" data-method="size" data-value="2">2</button>
+          <button class="group-choice" data-method="size" data-value="3">3</button>
+          <button class="group-choice selected" data-method="size" data-value="4">4</button>
+          <button class="group-choice" data-method="size" data-value="5">5</button>
+          <button class="group-choice" data-method="size" data-value="6">6</button>
+        </div>
+
+        <div class="or-divider">
+          OR
+        </div>
+
+        <div class="group-option-title">
+          Number of Groups
+        </div>
+
+        <div id="groupCountButtons" class="group-option-buttons">
+          <button class="group-choice" data-method="count" data-value="2">2</button>
+          <button class="group-choice" data-method="count" data-value="3">3</button>
+          <button class="group-choice" data-method="count" data-value="4">4</button>
+          <button class="group-choice" data-method="count" data-value="5">5</button>
+          <button class="group-choice" data-method="count" data-value="6">6</button>
+        </div>
+
+        <div id="groupAvailableCount" class="available-students">
+          0 students available
+        </div>
+
+        <div class="generate-area">
+          <button id="generateGroupsButton" class="primary large-button">
+            GENERATE GROUPS
+          </button>
+        </div>
+
+        <div class="small-note">
+          Groups use the students currently remaining in the pool.
+          Students removed in the Random Name Picker are excluded.
+        </div>
+
+      </div>
 
     </div>
 
+    <!-- GENERATED RESULTS -->
 
-    <div
-      id="spinArea"
-      class="main-actions">
+    <div id="groupsResultSection" class="section">
 
-      <button
-        id="spinButton"
-        class="primary large-button">
+      <div class="groups-toolbar">
 
-        PICK A STUDENT
+        <div class="groups-toolbar-title">
+          Groups
+        </div>
 
-      </button>
+        <div class="groups-toolbar-buttons">
+          <button id="regenerateButton">
+            🔀 Regenerate
+          </button>
 
-    </div>
+          <button id="fullscreenGroupsButton">
+            📺 Full Screen
+          </button>
+        </div>
 
+      </div>
 
-    <div
-      id="decisionActions"
-      class="decision-actions">
+      <div id="groupFullscreenArea">
 
-      <button
-        id="removeButton"
-        class="remove large-button">
+        <div class="fullscreen-heading">
+          <h2 id="fullscreenGroupTitle">
+            Period 1 Groups
+          </h2>
 
-        Remove From Pool
+          <div id="fullscreenGroupCount">
+            0 students
+          </div>
+        </div>
 
-      </button>
+        <div id="groupsGrid" class="groups-grid"></div>
 
-      <button
-        id="keepButton"
-        class="large-button">
-
-        Keep In Pool
-
-      </button>
+      </div>
 
     </div>
 
   </div>
 
-
-
   <!-- =====================================================
-       CONTROLS
+       SHARED CONTROLS
   ====================================================== -->
 
   <div class="section">
@@ -656,7 +834,6 @@
     </div>
 
     <div class="button-row">
-
       <button id="rosterButton">
         Edit Roster
       </button>
@@ -672,59 +849,40 @@
       <button id="resetButton">
         ↻ Reset Pool
       </button>
-
     </div>
 
-
     <div class="small-note">
-
-      Rosters and selection pools are remembered
-      on this browser profile.
-
+      Rosters and selection pools are remembered on this browser profile.
     </div>
 
   </div>
 
-
 </div>
-
-
 
 <!-- =========================================================
      ROSTER MODAL
 ========================================================= -->
 
-<div
-  id="rosterModal"
-  class="modal-overlay">
+<div id="rosterModal" class="modal-overlay">
 
   <div class="modal">
 
     <div class="modal-header">
-
       <h2 id="rosterModalTitle">
         Period 1 Roster
       </h2>
 
-      <button
-        id="closeRosterModal"
-        class="close-button">
+      <button id="closeRosterModal" class="close-button">
         ×
       </button>
-
     </div>
-
 
     <div class="modal-body">
 
-      <p class="small-note"
-         style="margin-top:0; font-size:14px;">
-
+      <p class="small-note" style="margin-top:0; font-size:14px;">
         Paste one student name per line.
         Your roster will be saved in this browser.
-
       </p>
-
 
       <textarea
         id="rosterInput"
@@ -735,1485 +893,1556 @@ James Martinez"></textarea>
 
     </div>
 
-
     <div class="modal-footer">
-
       <button id="cancelRosterButton">
         Cancel
       </button>
 
-      <button
-        id="saveRosterButton"
-        class="primary">
-
+      <button id="saveRosterButton" class="primary">
         Save Roster
-
       </button>
-
     </div>
 
   </div>
 
 </div>
-
-
 
 <!-- =========================================================
      POOL MODAL
 ========================================================= -->
 
-<div
-  id="poolModal"
-  class="modal-overlay">
+<div id="poolModal" class="modal-overlay">
 
   <div class="modal">
 
     <div class="modal-header">
-
       <h2 id="poolModalTitle">
         Students Remaining
       </h2>
 
-      <button
-        id="closePoolModal"
-        class="close-button">
+      <button id="closePoolModal" class="close-button">
         ×
       </button>
-
     </div>
 
-
     <div class="modal-body">
-
-      <div
-        id="poolList"
-        class="pool-list">
-      </div>
-
+      <div id="poolList" class="pool-list"></div>
     </div>
 
   </div>
 
 </div>
 
+<!-- TOAST -->
 
-
-<div
-  id="toast"
-  class="toast">
-</div>
-
+<div id="toast" class="toast"></div>
 
 
 <script>
 
+  /* =========================================================
+     SETTINGS
+  ========================================================= */
 
-/* =========================================================
-   SETTINGS
-========================================================= */
+  const PERIODS = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ];
 
-const PERIODS = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7"
-];
+  /*
+    Same key as the old Random Name Picker.
 
+    Your existing rosters should carry over automatically.
+  */
 
-/*
-  Same storage key as earlier versions.
-
-  Your existing roster data will therefore
-  continue working.
-*/
-
-const STORAGE_KEY =
-  "studentNamePicker_v1";
+  const STORAGE_KEY = "studentNamePicker_v1";
 
 
+  /* =========================================================
+     DEFAULT STATE
+  ========================================================= */
 
-/* =========================================================
-   DEFAULT STATE
-========================================================= */
-
-function createDefaultState() {
-
-  const periods = {};
-
-
-  PERIODS.forEach(period => {
-
-    periods[period] = {
-
+  function createPeriodData() {
+    return {
       masterRoster: [],
-
       pool: [],
+      history: [],
 
-      history: []
+      groupConfig: {
+        method: "size",
+        value: 4
+      },
 
+      groups: []
     };
-
-  });
-
-
-  return {
-
-    currentPeriod: "1",
-
-    periods: periods
-
-  };
-
-}
-
-
-
-/* =========================================================
-   LOAD / SAVE
-========================================================= */
-
-function loadState() {
-
-  const saved =
-    localStorage.getItem(
-      STORAGE_KEY
-    );
-
-
-  if (!saved) {
-
-    return createDefaultState();
-
   }
 
 
-  try {
+  function createDefaultState() {
 
-    const parsed =
-      JSON.parse(saved);
+    const periods = {};
+
+    PERIODS.forEach(period => {
+      periods[period] = createPeriodData();
+    });
+
+    return {
+      currentPeriod: "1",
+      periods: periods
+    };
+  }
 
 
-    if (!parsed.periods) {
+  /* =========================================================
+     LOAD / SAVE
+  ========================================================= */
 
-      parsed.periods = {};
+  function loadState() {
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (!saved) {
+      return createDefaultState();
+    }
+
+    try {
+
+      const parsed = JSON.parse(saved);
+
+      if (!parsed.periods) {
+        parsed.periods = {};
+      }
+
+      PERIODS.forEach(period => {
+
+        if (!parsed.periods[period]) {
+          parsed.periods[period] = createPeriodData();
+        }
+
+        const data = parsed.periods[period];
+
+        if (!Array.isArray(data.masterRoster)) {
+          data.masterRoster = [];
+        }
+
+        if (!Array.isArray(data.pool)) {
+          data.pool = [...data.masterRoster];
+        }
+
+        if (!Array.isArray(data.history)) {
+          data.history = [];
+        }
+
+        if (!data.groupConfig) {
+          data.groupConfig = {
+            method: "size",
+            value: 4
+          };
+        }
+
+        if (!Array.isArray(data.groups)) {
+          data.groups = [];
+        }
+
+      });
+
+      if (!PERIODS.includes(parsed.currentPeriod)) {
+        parsed.currentPeriod = "1";
+      }
+
+      return parsed;
 
     }
 
+    catch (error) {
+
+      console.error(
+        "Could not load Student Picker data:",
+        error
+      );
+
+      return createDefaultState();
+    }
+  }
+
+
+  function saveState() {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(state)
+    );
+  }
+
+
+  let state = loadState();
+
+
+  /* =========================================================
+     TEMPORARY STATE
+  ========================================================= */
+
+  let isSpinning = false;
+
+  let pendingStudent = null;
+
+  let currentMode = "picker";
+
+
+  /* =========================================================
+     ELEMENTS
+  ========================================================= */
+
+  const periodButtons =
+    document.getElementById("periodButtons");
+
+  const pickerModeButton =
+    document.getElementById("pickerModeButton");
+
+  const groupsModeButton =
+    document.getElementById("groupsModeButton");
+
+  const pickerView =
+    document.getElementById("pickerView");
+
+  const groupsView =
+    document.getElementById("groupsView");
+
+  const periodName =
+    document.getElementById("periodName");
+
+  const studentName =
+    document.getElementById("studentName");
+
+  const spinButton =
+    document.getElementById("spinButton");
+
+  const spinArea =
+    document.getElementById("spinArea");
+
+  const decisionActions =
+    document.getElementById("decisionActions");
+
+  const removeButton =
+    document.getElementById("removeButton");
+
+  const keepButton =
+    document.getElementById("keepButton");
+
+  const remainingCount =
+    document.getElementById("remainingCount");
+
+  const selectedCount =
+    document.getElementById("selectedCount");
+
+  const classSize =
+    document.getElementById("classSize");
+
+  const groupsPeriodName =
+    document.getElementById("groupsPeriodName");
+
+  const groupAvailableCount =
+    document.getElementById("groupAvailableCount");
+
+  const generateGroupsButton =
+    document.getElementById("generateGroupsButton");
+
+  const regenerateButton =
+    document.getElementById("regenerateButton");
+
+  const fullscreenGroupsButton =
+    document.getElementById("fullscreenGroupsButton");
+
+  const groupsResultSection =
+    document.getElementById("groupsResultSection");
+
+  const groupsGrid =
+    document.getElementById("groupsGrid");
+
+  const groupFullscreenArea =
+    document.getElementById("groupFullscreenArea");
+
+  const fullscreenGroupTitle =
+    document.getElementById("fullscreenGroupTitle");
+
+  const fullscreenGroupCount =
+    document.getElementById("fullscreenGroupCount");
+
+  const groupChoiceButtons =
+    document.querySelectorAll(".group-choice");
+
+  const rosterButton =
+    document.getElementById("rosterButton");
+
+  const poolButton =
+    document.getElementById("poolButton");
+
+  const undoButton =
+    document.getElementById("undoButton");
+
+  const resetButton =
+    document.getElementById("resetButton");
+
+  const rosterModal =
+    document.getElementById("rosterModal");
+
+  const rosterModalTitle =
+    document.getElementById("rosterModalTitle");
+
+  const rosterInput =
+    document.getElementById("rosterInput");
+
+  const saveRosterButton =
+    document.getElementById("saveRosterButton");
+
+  const cancelRosterButton =
+    document.getElementById("cancelRosterButton");
+
+  const closeRosterModal =
+    document.getElementById("closeRosterModal");
+
+  const poolModal =
+    document.getElementById("poolModal");
+
+  const poolModalTitle =
+    document.getElementById("poolModalTitle");
+
+  const poolList =
+    document.getElementById("poolList");
+
+  const closePoolModal =
+    document.getElementById("closePoolModal");
+
+  const toast =
+    document.getElementById("toast");
+
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  function currentData() {
+    return state.periods[state.currentPeriod];
+  }
+
+
+  function randomItem(array) {
+    return array[
+      Math.floor(Math.random() * array.length)
+    ];
+  }
+
+
+  function wait(milliseconds) {
+    return new Promise(resolve => {
+      setTimeout(resolve, milliseconds);
+    });
+  }
+
+
+  function showToast(message) {
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(showToast.timeout);
+
+    showToast.timeout =
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
+  }
+
+
+  function shuffleArray(array) {
+
+    const shuffled = [...array];
+
+    for (
+      let i = shuffled.length - 1;
+      i > 0;
+      i--
+    ) {
+
+      const j =
+        Math.floor(
+          Math.random() * (i + 1)
+        );
+
+      [
+        shuffled[i],
+        shuffled[j]
+      ] = [
+        shuffled[j],
+        shuffled[i]
+      ];
+
+    }
+
+    return shuffled;
+  }
+
+
+  /* =========================================================
+     MODE SWITCHING
+  ========================================================= */
+
+  function setMode(mode) {
+
+    currentMode = mode;
+
+    pickerModeButton.classList.toggle(
+      "selected",
+      mode === "picker"
+    );
+
+    groupsModeButton.classList.toggle(
+      "selected",
+      mode === "groups"
+    );
+
+    pickerView.style.display =
+      mode === "picker"
+        ? "block"
+        : "none";
+
+    groupsView.style.display =
+      mode === "groups"
+        ? "block"
+        : "none";
+
+    updateUI();
+  }
+
+
+  /* =========================================================
+     PERIOD BUTTONS
+  ========================================================= */
+
+  function buildPeriodButtons() {
+
+    periodButtons.innerHTML = "";
 
     PERIODS.forEach(period => {
 
-      if (!parsed.periods[period]) {
+      const button =
+        document.createElement("button");
 
-        parsed.periods[period] = {
+      button.textContent =
+        `Period ${period}`;
 
-          masterRoster: [],
-
-          pool: [],
-
-          history: []
-
-        };
-
+      if (
+        period === state.currentPeriod
+      ) {
+        button.classList.add("selected");
       }
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          if (isSpinning) {
+            return;
+          }
+
+          state.currentPeriod =
+            period;
+
+          pendingStudent =
+            null;
+
+          saveState();
+
+          buildPeriodButtons();
+
+          updateUI();
+        }
+      );
+
+      periodButtons.appendChild(button);
 
     });
+  }
 
 
-    if (
-      !PERIODS.includes(
-        parsed.currentPeriod
-      )
-    ) {
+  /* =========================================================
+     UPDATE INTERFACE
+  ========================================================= */
 
-      parsed.currentPeriod = "1";
+  function updateUI() {
 
+    const data =
+      currentData();
+
+    const total =
+      data.masterRoster.length;
+
+    const remaining =
+      data.pool.length;
+
+    const removed =
+      Math.max(
+        total - remaining,
+        0
+      );
+
+    /* PICKER */
+
+    periodName.textContent =
+      `Period ${state.currentPeriod}`;
+
+    remainingCount.textContent =
+      `${remaining} remaining`;
+
+    selectedCount.textContent =
+      `${removed} removed`;
+
+    classSize.textContent =
+      `${total} student${
+        total === 1 ? "" : "s"
+      }`;
+
+    undoButton.disabled =
+      data.history.length === 0;
+
+    resetButton.disabled =
+      total === 0;
+
+    poolButton.disabled =
+      total === 0;
+
+    /* GROUPS */
+
+    groupsPeriodName.textContent =
+      `Make Groups — Period ${state.currentPeriod}`;
+
+    groupAvailableCount.textContent =
+      `${remaining} student${
+        remaining === 1 ? "" : "s"
+      } available from the current pool`;
+
+    generateGroupsButton.disabled =
+      remaining === 0;
+
+    updateGroupChoiceButtons();
+
+    renderGroups();
+
+    /* DON'T INTERRUPT SPIN */
+
+    if (isSpinning) {
+      return;
     }
 
+    if (pendingStudent) {
 
-    return parsed;
+      spinArea.style.display =
+        "none";
 
-  }
-
-
-  catch (error) {
-
-    console.error(
-      "Could not load picker data:",
-      error
-    );
-
-
-    return createDefaultState();
-
-  }
-
-}
-
-
-
-function saveState() {
-
-  localStorage.setItem(
-
-    STORAGE_KEY,
-
-    JSON.stringify(state)
-
-  );
-
-}
-
-
-
-let state =
-  loadState();
-
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const periodButtons =
-  document.getElementById(
-    "periodButtons"
-  );
-
-
-const periodName =
-  document.getElementById(
-    "periodName"
-  );
-
-
-const studentName =
-  document.getElementById(
-    "studentName"
-  );
-
-
-const spinButton =
-  document.getElementById(
-    "spinButton"
-  );
-
-
-const spinArea =
-  document.getElementById(
-    "spinArea"
-  );
-
-
-const decisionActions =
-  document.getElementById(
-    "decisionActions"
-  );
-
-
-const removeButton =
-  document.getElementById(
-    "removeButton"
-  );
-
-
-const keepButton =
-  document.getElementById(
-    "keepButton"
-  );
-
-
-const remainingCount =
-  document.getElementById(
-    "remainingCount"
-  );
-
-
-const selectedCount =
-  document.getElementById(
-    "selectedCount"
-  );
-
-
-const classSize =
-  document.getElementById(
-    "classSize"
-  );
-
-
-const rosterButton =
-  document.getElementById(
-    "rosterButton"
-  );
-
-
-const poolButton =
-  document.getElementById(
-    "poolButton"
-  );
-
-
-const undoButton =
-  document.getElementById(
-    "undoButton"
-  );
-
-
-const resetButton =
-  document.getElementById(
-    "resetButton"
-  );
-
-
-const rosterModal =
-  document.getElementById(
-    "rosterModal"
-  );
-
-
-const rosterModalTitle =
-  document.getElementById(
-    "rosterModalTitle"
-  );
-
-
-const rosterInput =
-  document.getElementById(
-    "rosterInput"
-  );
-
-
-const saveRosterButton =
-  document.getElementById(
-    "saveRosterButton"
-  );
-
-
-const cancelRosterButton =
-  document.getElementById(
-    "cancelRosterButton"
-  );
-
-
-const closeRosterModal =
-  document.getElementById(
-    "closeRosterModal"
-  );
-
-
-const poolModal =
-  document.getElementById(
-    "poolModal"
-  );
-
-
-const poolModalTitle =
-  document.getElementById(
-    "poolModalTitle"
-  );
-
-
-const poolList =
-  document.getElementById(
-    "poolList"
-  );
-
-
-const closePoolModal =
-  document.getElementById(
-    "closePoolModal"
-  );
-
-
-const toast =
-  document.getElementById(
-    "toast"
-  );
-
-
-
-/* =========================================================
-   TEMPORARY STATE
-========================================================= */
-
-let isSpinning = false;
-
-let pendingStudent = null;
-
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function currentData() {
-
-  return state.periods[
-    state.currentPeriod
-  ];
-
-}
-
-
-
-function randomItem(array) {
-
-  return array[
-    Math.floor(
-      Math.random() *
-      array.length
-    )
-  ];
-
-}
-
-
-
-function wait(milliseconds) {
-
-  return new Promise(
-    resolve =>
-      setTimeout(
-        resolve,
-        milliseconds
-      )
-  );
-
-}
-
-
-
-function showToast(message) {
-
-  toast.textContent =
-    message;
-
-
-  toast.classList.add(
-    "show"
-  );
-
-
-  clearTimeout(
-    showToast.timeout
-  );
-
-
-  showToast.timeout =
-    setTimeout(() => {
-
-      toast.classList.remove(
-        "show"
+      decisionActions.classList.add(
+        "visible"
       );
 
-    }, 1800);
+      studentName.textContent =
+        pendingStudent;
 
-}
-
-
-
-/* =========================================================
-   PERIOD BUTTONS
-========================================================= */
-
-function buildPeriodButtons() {
-
-  periodButtons.innerHTML =
-    "";
-
-
-  PERIODS.forEach(period => {
-
-    const button =
-      document.createElement(
-        "button"
-      );
-
-
-    button.textContent =
-      `Period ${period}`;
-
-
-    if (
-      period ===
-      state.currentPeriod
-    ) {
-
-      button.classList.add(
-        "selected"
-      );
-
+      return;
     }
 
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        if (isSpinning) {
-          return;
-        }
-
-
-        state.currentPeriod =
-          period;
-
-
-        pendingStudent =
-          null;
-
-
-        saveState();
-
-        buildPeriodButtons();
-
-        updateUI();
-
-      }
-    );
-
-
-    periodButtons.appendChild(
-      button
-    );
-
-  });
-
-}
-
-
-
-/* =========================================================
-   UPDATE INTERFACE
-========================================================= */
-
-function updateUI() {
-
-  const data =
-    currentData();
-
-
-  const total =
-    data.masterRoster.length;
-
-
-  const remaining =
-    data.pool.length;
-
-
-  const removed =
-    Math.max(
-      total - remaining,
-      0
-    );
-
-
-  periodName.textContent =
-    `Period ${state.currentPeriod}`;
-
-
-  remainingCount.textContent =
-    `${remaining} remaining`;
-
-
-  selectedCount.textContent =
-    `${removed} removed`;
-
-
-  classSize.textContent =
-    `${total} student${
-      total === 1
-        ? ""
-        : "s"
-    }`;
-
-
-  undoButton.disabled =
-    data.history.length === 0;
-
-
-  resetButton.disabled =
-    total === 0;
-
-
-  poolButton.disabled =
-    total === 0;
-
-
-  if (isSpinning) {
-    return;
-  }
-
-
-  if (pendingStudent) {
-
-    spinArea.style.display =
-      "none";
-
-
-    decisionActions.classList.add(
+    decisionActions.classList.remove(
       "visible"
     );
 
+    spinArea.style.display =
+      "flex";
+
+    if (total === 0) {
+
+      studentName.textContent =
+        "Add a roster to begin";
+
+      spinButton.textContent =
+        "ADD ROSTER";
+
+      spinButton.disabled =
+        false;
+
+      return;
+    }
+
+    if (remaining === 0) {
+
+      studentName.textContent =
+        "Everyone has been selected";
+
+      spinButton.textContent =
+        "RESET CLASS";
+
+      spinButton.disabled =
+        false;
+
+      return;
+    }
 
     studentName.textContent =
-      pendingStudent;
+      "Ready?";
 
+    spinButton.textContent =
+      "PICK A STUDENT";
 
-    return;
-
+    spinButton.disabled =
+      false;
   }
 
 
-  decisionActions.classList.remove(
-    "visible"
+  /* =========================================================
+     RANDOM NAME PICKER
+  ========================================================= */
+
+  async function spin() {
+
+    const data =
+      currentData();
+
+    if (
+      data.masterRoster.length === 0
+    ) {
+
+      openRosterEditor();
+
+      return;
+    }
+
+    if (
+      data.pool.length === 0
+    ) {
+
+      resetPool();
+
+      return;
+    }
+
+    if (
+      isSpinning ||
+      pendingStudent
+    ) {
+      return;
+    }
+
+    isSpinning = true;
+
+    spinButton.disabled = true;
+
+    const winner =
+      randomItem(data.pool);
+
+    const timings = [
+      40,
+      40,
+      45,
+      45,
+      50,
+      55,
+      60,
+      65,
+      75,
+      85,
+      100,
+      115,
+      135,
+      160,
+      190
+    ];
+
+    let previousName = null;
+
+    for (
+      let i = 0;
+      i < timings.length;
+      i++
+    ) {
+
+      let cyclingName =
+        randomItem(data.pool);
+
+      if (
+        data.pool.length > 1
+      ) {
+
+        let safety = 0;
+
+        while (
+          cyclingName === previousName &&
+          safety < 10
+        ) {
+
+          cyclingName =
+            randomItem(data.pool);
+
+          safety++;
+        }
+      }
+
+      studentName.classList.add(
+        "cycling"
+      );
+
+      studentName.textContent =
+        cyclingName;
+
+      previousName =
+        cyclingName;
+
+      await wait(timings[i]);
+
+      studentName.classList.remove(
+        "cycling"
+      );
+    }
+
+    await wait(100);
+
+    studentName.textContent =
+      winner;
+
+    pendingStudent =
+      winner;
+
+    isSpinning =
+      false;
+
+    updateUI();
+  }
+
+
+  /* =========================================================
+     REMOVE STUDENT
+  ========================================================= */
+
+  function removePendingStudent() {
+
+    if (!pendingStudent) {
+      return;
+    }
+
+    const data =
+      currentData();
+
+    data.history.push({
+      action: "remove",
+      student: pendingStudent,
+      previousPool: [...data.pool]
+    });
+
+    data.pool =
+      data.pool.filter(
+        student =>
+          student !== pendingStudent
+      );
+
+    /*
+      Current groups are now stale because
+      the available pool changed.
+    */
+
+    data.groups = [];
+
+    const removedStudent =
+      pendingStudent;
+
+    pendingStudent =
+      null;
+
+    saveState();
+
+    updateUI();
+
+    showToast(
+      `${removedStudent} removed from pool`
+    );
+  }
+
+
+  /* =========================================================
+     KEEP STUDENT
+  ========================================================= */
+
+  function keepPendingStudent() {
+
+    if (!pendingStudent) {
+      return;
+    }
+
+    const data =
+      currentData();
+
+    data.history.push({
+      action: "keep",
+      student: pendingStudent,
+      previousPool: [...data.pool]
+    });
+
+    const keptStudent =
+      pendingStudent;
+
+    pendingStudent =
+      null;
+
+    saveState();
+
+    updateUI();
+
+    showToast(
+      `${keptStudent} stays in the pool`
+    );
+  }
+
+
+  /* =========================================================
+     RESET POOL
+  ========================================================= */
+
+  function resetPool() {
+
+    const data =
+      currentData();
+
+    if (
+      data.masterRoster.length === 0
+    ) {
+      return;
+    }
+
+    data.history.push({
+      action: "reset",
+      previousPool: [...data.pool]
+    });
+
+    data.pool =
+      [...data.masterRoster];
+
+    data.groups = [];
+
+    pendingStudent =
+      null;
+
+    saveState();
+
+    updateUI();
+
+    showToast(
+      `Period ${state.currentPeriod} pool reset`
+    );
+  }
+
+
+  /* =========================================================
+     UNDO
+  ========================================================= */
+
+  function undoLastAction() {
+
+    if (isSpinning) {
+      return;
+    }
+
+    const data =
+      currentData();
+
+    const lastAction =
+      data.history.pop();
+
+    if (!lastAction) {
+
+      showToast(
+        "Nothing to undo"
+      );
+
+      return;
+    }
+
+    data.pool =
+      [...lastAction.previousPool];
+
+    /*
+      Pool changed, so old groups
+      should no longer be shown.
+    */
+
+    data.groups = [];
+
+    pendingStudent =
+      null;
+
+    saveState();
+
+    updateUI();
+
+    if (
+      lastAction.action === "remove"
+    ) {
+
+      showToast(
+        `${lastAction.student} returned to pool`
+      );
+
+    }
+
+    else if (
+      lastAction.action === "reset"
+    ) {
+
+      showToast(
+        "Reset undone"
+      );
+
+    }
+
+    else {
+
+      showToast(
+        "Last action undone"
+      );
+
+    }
+  }
+
+
+  /* =========================================================
+     GROUP OPTIONS
+  ========================================================= */
+
+  function updateGroupChoiceButtons() {
+
+    const data =
+      currentData();
+
+    groupChoiceButtons.forEach(
+      button => {
+
+        const method =
+          button.dataset.method;
+
+        const value =
+          Number(button.dataset.value);
+
+        const selected =
+          data.groupConfig.method === method &&
+          data.groupConfig.value === value;
+
+        button.classList.toggle(
+          "selected",
+          selected
+        );
+      }
+    );
+  }
+
+
+  groupChoiceButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const data =
+            currentData();
+
+          data.groupConfig = {
+            method:
+              button.dataset.method,
+
+            value:
+              Number(
+                button.dataset.value
+              )
+          };
+
+          /*
+            Changing configuration hides
+            existing groups until regenerated.
+          */
+
+          data.groups = [];
+
+          saveState();
+
+          updateUI();
+        }
+      );
+    }
   );
 
 
-  spinArea.style.display =
-    "flex";
+  /* =========================================================
+     GENERATE GROUPS
+  ========================================================= */
 
+  function generateGroups() {
 
-  if (total === 0) {
+    const data =
+      currentData();
 
-    studentName.textContent =
-      "Add a roster to begin";
+    if (
+      data.masterRoster.length === 0
+    ) {
 
+      openRosterEditor();
 
-    spinButton.textContent =
-      "ADD ROSTER";
+      return;
+    }
 
+    if (
+      data.pool.length === 0
+    ) {
 
-    spinButton.disabled =
-      false;
+      showToast(
+        "No students are currently in the pool"
+      );
 
+      return;
+    }
 
-    return;
-
-  }
-
-
-  if (remaining === 0) {
-
-    studentName.textContent =
-      "Everyone has been selected";
-
-
-    spinButton.textContent =
-      "RESET CLASS";
-
-
-    spinButton.disabled =
-      false;
-
-
-    return;
-
-  }
-
-
-  studentName.textContent =
-    "Ready?";
-
-
-  spinButton.textContent =
-    "PICK A STUDENT";
-
-
-  spinButton.disabled =
-    false;
-
-}
-
-
-
-/* =========================================================
-   RANDOM PICK
-========================================================= */
-
-async function spin() {
-
-  const data =
-    currentData();
-
-
-  if (
-    data.masterRoster.length === 0
-  ) {
-
-    openRosterEditor();
-
-    return;
-
-  }
-
-
-  if (
-    data.pool.length === 0
-  ) {
-
-    resetPool();
-
-    return;
-
-  }
-
-
-  if (
-    isSpinning ||
-    pendingStudent
-  ) {
-
-    return;
-
-  }
-
-
-  isSpinning =
-    true;
-
-
-  spinButton.disabled =
-    true;
-
-
-  /*
-    Pick the actual winner before
-    displaying the animation.
-  */
-
-  const winner =
-    randomItem(
-      data.pool
-    );
-
-
-  /*
-    Slot-machine style slowdown.
-  */
-
-  const timings = [
-
-    40,
-    40,
-    45,
-    45,
-    50,
-    55,
-    60,
-    65,
-    75,
-    85,
-    100,
-    115,
-    135,
-    160,
-    190
-
-  ];
-
-
-  let previousName =
-    null;
-
-
-  for (
-    let i = 0;
-    i < timings.length;
-    i++
-  ) {
-
-    let cyclingName =
-      randomItem(
+    const students =
+      shuffleArray(
         data.pool
       );
 
+    const config =
+      data.groupConfig;
+
+    let numberOfGroups;
+
+    /*
+      GROUP SIZE
+
+      Example:
+      31 students with size 4 =
+      8 groups.
+
+      Students are then distributed evenly,
+      avoiding a tiny leftover group.
+    */
 
     if (
-      data.pool.length > 1
+      config.method === "size"
     ) {
 
-      let safety =
-        0;
-
-
-      while (
-        cyclingName ===
-          previousName &&
-        safety < 10
-      ) {
-
-        cyclingName =
-          randomItem(
-            data.pool
-          );
-
-
-        safety++;
-
-      }
-
+      numberOfGroups =
+        Math.ceil(
+          students.length /
+          config.value
+        );
     }
 
-
-    studentName.classList.add(
-      "cycling"
-    );
-
-
-    studentName.textContent =
-      cyclingName;
-
-
-    previousName =
-      cyclingName;
-
-
-    await wait(
-      timings[i]
-    );
-
-
-    studentName.classList.remove(
-      "cycling"
-    );
-
-  }
-
-
-  await wait(100);
-
-
-  studentName.textContent =
-    winner;
-
-
-  pendingStudent =
-    winner;
-
-
-  isSpinning =
-    false;
-
-
-  updateUI();
-
-}
-
-
-
-/* =========================================================
-   REMOVE STUDENT
-========================================================= */
-
-function removePendingStudent() {
-
-  if (!pendingStudent) {
-    return;
-  }
-
-
-  const data =
-    currentData();
-
-
-  data.history.push({
-
-    action:
-      "remove",
-
-    student:
-      pendingStudent,
-
-    previousPool:
-      [...data.pool]
-
-  });
-
-
-  data.pool =
-    data.pool.filter(
-      student =>
-        student !==
-        pendingStudent
-    );
-
-
-  const removedStudent =
-    pendingStudent;
-
-
-  pendingStudent =
-    null;
-
-
-  saveState();
-
-  updateUI();
-
-
-  showToast(
-    `${removedStudent} removed from pool`
-  );
-
-}
-
-
-
-/* =========================================================
-   KEEP STUDENT
-========================================================= */
-
-function keepPendingStudent() {
-
-  if (!pendingStudent) {
-    return;
-  }
-
-
-  const data =
-    currentData();
-
-
-  data.history.push({
-
-    action:
-      "keep",
-
-    student:
-      pendingStudent,
-
-    previousPool:
-      [...data.pool]
-
-  });
-
-
-  const keptStudent =
-    pendingStudent;
-
-
-  pendingStudent =
-    null;
-
-
-  saveState();
-
-  updateUI();
-
-
-  showToast(
-    `${keptStudent} stays in the pool`
-  );
-
-}
-
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-function resetPool() {
-
-  const data =
-    currentData();
-
-
-  if (
-    data.masterRoster.length === 0
-  ) {
-
-    return;
-
-  }
-
-
-  data.history.push({
-
-    action:
-      "reset",
-
-    previousPool:
-      [...data.pool]
-
-  });
-
-
-  data.pool =
-    [...data.masterRoster];
-
-
-  pendingStudent =
-    null;
-
-
-  saveState();
-
-  updateUI();
-
-
-  showToast(
-    `Period ${state.currentPeriod} pool reset`
-  );
-
-}
-
-
-
-/* =========================================================
-   UNDO
-========================================================= */
-
-function undoLastAction() {
-
-  if (isSpinning) {
-    return;
-  }
-
-
-  const data =
-    currentData();
-
-
-  const lastAction =
-    data.history.pop();
-
-
-  if (!lastAction) {
-
-    showToast(
-      "Nothing to undo"
-    );
-
-    return;
-
-  }
-
-
-  data.pool =
-    [...lastAction.previousPool];
-
-
-  pendingStudent =
-    null;
-
-
-  saveState();
-
-  updateUI();
-
-
-  if (
-    lastAction.action ===
-    "remove"
-  ) {
-
-    showToast(
-      `${lastAction.student} returned to pool`
-    );
-
-  }
-
-
-  else if (
-    lastAction.action ===
-    "reset"
-  ) {
-
-    showToast(
-      "Reset undone"
-    );
-
-  }
-
-
-  else {
-
-    showToast(
-      "Last action undone"
-    );
-
-  }
-
-}
-
-
-
-/* =========================================================
-   ROSTER EDITOR
-========================================================= */
-
-function openRosterEditor() {
-
-  const data =
-    currentData();
-
-
-  rosterModalTitle.textContent =
-    `Period ${state.currentPeriod} Roster`;
-
-
-  rosterInput.value =
-    data.masterRoster.join(
-      "\n"
-    );
-
-
-  rosterModal.classList.add(
-    "visible"
-  );
-
-
-  rosterInput.focus();
-
-}
-
-
-
-function closeRosterEditor() {
-
-  rosterModal.classList.remove(
-    "visible"
-  );
-
-}
-
-
-
-function saveRoster() {
-
-  let names =
-    rosterInput.value
-
-      .split(/\r?\n/)
-
-      .map(
-        name =>
-          name.trim()
-      )
-
-      .filter(Boolean);
-
-
-  /*
-    Remove exact duplicates.
-  */
-
-  names =
-    [...new Set(names)];
-
-
-  const data =
-    currentData();
-
-
-  data.masterRoster =
-    names;
-
-
-  data.pool =
-    [...names];
-
-
-  data.history =
-    [];
-
-
-  pendingStudent =
-    null;
-
-
-  saveState();
-
-  closeRosterEditor();
-
-  updateUI();
-
-
-  showToast(
-    `${names.length} students saved`
-  );
-
-}
-
-
-
-/* =========================================================
-   VIEW POOL
-========================================================= */
-
-function openPoolViewer() {
-
-  const data =
-    currentData();
-
-
-  poolModalTitle.textContent =
-    `Period ${state.currentPeriod} — ${data.pool.length} Remaining`;
-
-
-  poolList.innerHTML =
-    "";
-
-
-  if (
-    data.pool.length === 0
-  ) {
-
-    const message =
-      document.createElement(
-        "div"
+    /*
+      NUMBER OF GROUPS
+    */
+
+    else {
+
+      numberOfGroups =
+        Math.min(
+          config.value,
+          students.length
+        );
+    }
+
+    const groups =
+      Array.from(
+        { length: numberOfGroups },
+        () => []
       );
 
+    /*
+      Round-robin distribution keeps
+      group sizes as even as possible.
+    */
 
-    message.className =
-      "empty-message";
+    students.forEach(
+      (student, index) => {
 
+        const groupIndex =
+          index % numberOfGroups;
 
-    message.textContent =
-      "No students remain in the pool.";
-
-
-    poolList.appendChild(
-      message
+        groups[groupIndex].push(
+          student
+        );
+      }
     );
 
+    data.groups =
+      groups;
+
+    saveState();
+
+    renderGroups();
+
+    groupsResultSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   }
 
 
-  else {
+  /* =========================================================
+     RENDER GROUPS
+  ========================================================= */
 
-    const sorted =
-      [...data.pool].sort(
-        (a, b) =>
-          a.localeCompare(b)
-      );
+  function renderGroups() {
 
+    const data =
+      currentData();
 
-    sorted.forEach(name => {
+    groupsGrid.innerHTML =
+      "";
 
-      const item =
-        document.createElement(
-          "div"
+    if (
+      !data.groups ||
+      data.groups.length === 0
+    ) {
+
+      groupsResultSection.style.display =
+        "none";
+
+      return;
+    }
+
+    groupsResultSection.style.display =
+      "block";
+
+    fullscreenGroupTitle.textContent =
+      `Period ${state.currentPeriod} Groups`;
+
+    fullscreenGroupCount.textContent =
+      `${data.pool.length} students`;
+
+    data.groups.forEach(
+      (group, index) => {
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "group-card";
+
+        const header =
+          document.createElement("div");
+
+        header.className =
+          "group-card-header";
+
+        header.textContent =
+          `Group ${index + 1}`;
+
+        const studentsContainer =
+          document.createElement("div");
+
+        studentsContainer.className =
+          "group-students";
+
+        group.forEach(student => {
+
+          const studentRow =
+            document.createElement("div");
+
+          studentRow.className =
+            "group-student";
+
+          studentRow.textContent =
+            student;
+
+          studentsContainer.appendChild(
+            studentRow
+          );
+        });
+
+        card.appendChild(header);
+
+        card.appendChild(
+          studentsContainer
         );
 
+        groupsGrid.appendChild(card);
+      }
+    );
+  }
 
-      item.className =
-        "pool-name";
+
+  /* =========================================================
+     FULL SCREEN GROUPS
+  ========================================================= */
+
+  async function toggleGroupsFullscreen() {
+
+    if (
+      document.fullscreenElement
+    ) {
+
+      await document.exitFullscreen();
+
+      return;
+    }
+
+    if (
+      currentData().groups.length === 0
+    ) {
+      return;
+    }
+
+    try {
+
+      await groupFullscreenArea.requestFullscreen();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Fullscreen unavailable:",
+        error
+      );
+    }
+  }
 
 
-      item.textContent =
-        name;
+  document.addEventListener(
+    "fullscreenchange",
+    () => {
 
+      fullscreenGroupsButton.textContent =
+        document.fullscreenElement
+          ? "Exit Full Screen"
+          : "📺 Full Screen";
+    }
+  );
+
+
+  /* =========================================================
+     ROSTER EDITOR
+  ========================================================= */
+
+  function openRosterEditor() {
+
+    const data =
+      currentData();
+
+    rosterModalTitle.textContent =
+      `Period ${state.currentPeriod} Roster`;
+
+    rosterInput.value =
+      data.masterRoster.join("\n");
+
+    rosterModal.classList.add(
+      "visible"
+    );
+
+    rosterInput.focus();
+  }
+
+
+  function closeRosterEditor() {
+
+    rosterModal.classList.remove(
+      "visible"
+    );
+  }
+
+
+  function saveRoster() {
+
+    let names =
+      rosterInput.value
+        .split(/\r?\n/)
+        .map(name => name.trim())
+        .filter(Boolean);
+
+    /*
+      Remove exact duplicate lines.
+    */
+
+    names =
+      [...new Set(names)];
+
+    const data =
+      currentData();
+
+    data.masterRoster =
+      names;
+
+    data.pool =
+      [...names];
+
+    data.history =
+      [];
+
+    data.groups =
+      [];
+
+    pendingStudent =
+      null;
+
+    saveState();
+
+    closeRosterEditor();
+
+    updateUI();
+
+    showToast(
+      `${names.length} students saved`
+    );
+  }
+
+
+  /* =========================================================
+     VIEW CURRENT POOL
+  ========================================================= */
+
+  function openPoolViewer() {
+
+    const data =
+      currentData();
+
+    poolModalTitle.textContent =
+      `Period ${state.currentPeriod} — ${data.pool.length} Remaining`;
+
+    poolList.innerHTML =
+      "";
+
+    if (
+      data.pool.length === 0
+    ) {
+
+      const message =
+        document.createElement("div");
+
+      message.className =
+        "empty-message";
+
+      message.textContent =
+        "No students remain in the pool.";
 
       poolList.appendChild(
-        item
+        message
       );
 
-    });
-
-  }
-
-
-  poolModal.classList.add(
-    "visible"
-  );
-
-}
-
-
-
-function closePoolViewer() {
-
-  poolModal.classList.remove(
-    "visible"
-  );
-
-}
-
-
-
-/* =========================================================
-   EVENTS
-========================================================= */
-
-spinButton.addEventListener(
-  "click",
-  spin
-);
-
-
-removeButton.addEventListener(
-  "click",
-  removePendingStudent
-);
-
-
-keepButton.addEventListener(
-  "click",
-  keepPendingStudent
-);
-
-
-rosterButton.addEventListener(
-  "click",
-  openRosterEditor
-);
-
-
-poolButton.addEventListener(
-  "click",
-  openPoolViewer
-);
-
-
-undoButton.addEventListener(
-  "click",
-  undoLastAction
-);
-
-
-resetButton.addEventListener(
-  "click",
-  resetPool
-);
-
-
-saveRosterButton.addEventListener(
-  "click",
-  saveRoster
-);
-
-
-cancelRosterButton.addEventListener(
-  "click",
-  closeRosterEditor
-);
-
-
-closeRosterModal.addEventListener(
-  "click",
-  closeRosterEditor
-);
-
-
-closePoolModal.addEventListener(
-  "click",
-  closePoolViewer
-);
-
-
-
-/* Click outside modal */
-
-rosterModal.addEventListener(
-  "click",
-  event => {
-
-    if (
-      event.target ===
-      rosterModal
-    ) {
-
-      closeRosterEditor();
-
     }
 
-  }
-);
+    else {
 
+      const sorted =
+        [...data.pool].sort(
+          (a, b) =>
+            a.localeCompare(b)
+        );
 
-poolModal.addEventListener(
-  "click",
-  event => {
+      sorted.forEach(name => {
 
-    if (
-      event.target ===
-      poolModal
-    ) {
+        const item =
+          document.createElement("div");
 
-      closePoolViewer();
+        item.className =
+          "pool-name";
 
+        item.textContent =
+          name;
+
+        poolList.appendChild(
+          item
+        );
+      });
     }
 
+    poolModal.classList.add(
+      "visible"
+    );
   }
-);
 
 
+  function closePoolViewer() {
 
-/* =========================================================
-   KEYBOARD SHORTCUTS
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    const isTyping =
-      document.activeElement
-        .tagName ===
-      "TEXTAREA";
+    poolModal.classList.remove(
+      "visible"
+    );
+  }
 
 
-    /*
-      Spacebar selects student.
-    */
+  /* =========================================================
+     EVENTS
+  ========================================================= */
 
-    if (
-      event.code ===
-        "Space" &&
-      !isTyping &&
-      !rosterModal.classList.contains(
-        "visible"
-      ) &&
-      !poolModal.classList.contains(
-        "visible"
-      )
-    ) {
+  pickerModeButton.addEventListener(
+    "click",
+    () => setMode("picker")
+  );
 
-      event.preventDefault();
+  groupsModeButton.addEventListener(
+    "click",
+    () => setMode("groups")
+  );
+
+  spinButton.addEventListener(
+    "click",
+    spin
+  );
+
+  removeButton.addEventListener(
+    "click",
+    removePendingStudent
+  );
+
+  keepButton.addEventListener(
+    "click",
+    keepPendingStudent
+  );
+
+  generateGroupsButton.addEventListener(
+    "click",
+    generateGroups
+  );
+
+  regenerateButton.addEventListener(
+    "click",
+    generateGroups
+  );
+
+  fullscreenGroupsButton.addEventListener(
+    "click",
+    toggleGroupsFullscreen
+  );
+
+  rosterButton.addEventListener(
+    "click",
+    openRosterEditor
+  );
+
+  poolButton.addEventListener(
+    "click",
+    openPoolViewer
+  );
+
+  undoButton.addEventListener(
+    "click",
+    undoLastAction
+  );
+
+  resetButton.addEventListener(
+    "click",
+    resetPool
+  );
+
+  saveRosterButton.addEventListener(
+    "click",
+    saveRoster
+  );
+
+  cancelRosterButton.addEventListener(
+    "click",
+    closeRosterEditor
+  );
+
+  closeRosterModal.addEventListener(
+    "click",
+    closeRosterEditor
+  );
+
+  closePoolModal.addEventListener(
+    "click",
+    closePoolViewer
+  );
 
 
-      if (!pendingStudent) {
+  /* CLICK OUTSIDE MODALS */
 
-        spin();
+  rosterModal.addEventListener(
+    "click",
+    event => {
 
+      if (
+        event.target === rosterModal
+      ) {
+        closeRosterEditor();
+      }
+    }
+  );
+
+  poolModal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === poolModal
+      ) {
+        closePoolViewer();
+      }
+    }
+  );
+
+
+  /* =========================================================
+     KEYBOARD SHORTCUTS
+  ========================================================= */
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      const isTyping =
+        document.activeElement.tagName ===
+        "TEXTAREA";
+
+      /*
+        SPACEBAR selects student only
+        while Pick a Student mode is open.
+      */
+
+      if (
+        event.code === "Space" &&
+        currentMode === "picker" &&
+        !isTyping &&
+        !rosterModal.classList.contains("visible") &&
+        !poolModal.classList.contains("visible")
+      ) {
+
+        event.preventDefault();
+
+        if (!pendingStudent) {
+          spin();
+        }
       }
 
+      /*
+        Escape closes normal modals.
+        Browser also handles Escape for fullscreen.
+      */
+
+      if (
+        event.key === "Escape"
+      ) {
+
+        closeRosterEditor();
+
+        closePoolViewer();
+      }
     }
+  );
 
 
-    /*
-      Escape closes modals.
-    */
+  /* =========================================================
+     START APP
+  ========================================================= */
 
-    if (
-      event.key ===
-      "Escape"
-    ) {
+  buildPeriodButtons();
 
-      closeRosterEditor();
+  setMode("picker");
 
-      closePoolViewer();
-
-    }
-
-  }
-);
-
-
-
-/* =========================================================
-   START APP
-========================================================= */
-
-buildPeriodButtons();
-
-updateUI();
-
+  updateUI();
 
 </script>
 
