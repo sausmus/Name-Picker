@@ -412,8 +412,6 @@
       border-bottom: none;
     }
 
-    /* FULL SCREEN GROUP VIEW */
-
     #groupFullscreenArea:fullscreen {
       background: #f4f6f8;
       padding: 30px;
@@ -441,6 +439,31 @@
     #groupFullscreenArea:fullscreen .group-student {
       font-size: 21px;
       padding: 11px 2px;
+    }
+
+    /* =========================================================
+       SETTINGS
+    ========================================================= */
+
+    .period-visibility-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 4px;
+      border-bottom: 1px solid #f1f3f4;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .period-visibility-option:last-child {
+      border-bottom: none;
+    }
+
+    .period-visibility-option input {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #1a73e8;
     }
 
     /* =========================================================
@@ -662,9 +685,7 @@
     </div>
   </div>
 
-  <!-- =====================================================
-       RANDOM NAME PICKER
-  ====================================================== -->
+  <!-- RANDOM NAME PICKER -->
 
   <div id="pickerView">
 
@@ -716,9 +737,7 @@
 
   </div>
 
-  <!-- =====================================================
-       MAKE GROUPS
-  ====================================================== -->
+  <!-- MAKE GROUPS -->
 
   <div id="groupsView">
 
@@ -823,9 +842,7 @@
 
   </div>
 
-  <!-- =====================================================
-       SHARED CONTROLS
-  ====================================================== -->
+  <!-- SHARED CONTROLS -->
 
   <div class="section">
 
@@ -834,6 +851,11 @@
     </div>
 
     <div class="button-row">
+
+      <button id="settingsButton">
+        ⚙ Settings
+      </button>
+
       <button id="rosterButton">
         Edit Roster
       </button>
@@ -849,15 +871,71 @@
       <button id="resetButton">
         ↻ Reset Pool
       </button>
+
     </div>
 
     <div class="small-note">
-      Rosters and selection pools are remembered on this browser profile.
+      Rosters, visible periods, and selection pools are remembered on this browser profile.
     </div>
 
   </div>
 
 </div>
+
+
+<!-- =========================================================
+     SETTINGS MODAL
+========================================================= -->
+
+<div id="settingsModal" class="modal-overlay">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2>Settings</h2>
+
+      <button
+        id="closeSettingsModal"
+        class="close-button">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="section-title">
+        Visible Periods
+      </div>
+
+      <p class="small-note" style="margin-top:0; margin-bottom:16px;">
+        Hide periods you do not teach. Hidden periods keep their saved roster,
+        pool, and group data.
+      </p>
+
+      <div id="periodVisibilityOptions"></div>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button id="cancelSettingsButton">
+        Cancel
+      </button>
+
+      <button
+        id="saveSettingsButton"
+        class="primary">
+        Save
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 
 <!-- =========================================================
      ROSTER MODAL
@@ -868,13 +946,17 @@
   <div class="modal">
 
     <div class="modal-header">
+
       <h2 id="rosterModalTitle">
         Period 1 Roster
       </h2>
 
-      <button id="closeRosterModal" class="close-button">
+      <button
+        id="closeRosterModal"
+        class="close-button">
         ×
       </button>
+
     </div>
 
     <div class="modal-body">
@@ -894,18 +976,23 @@ James Martinez"></textarea>
     </div>
 
     <div class="modal-footer">
+
       <button id="cancelRosterButton">
         Cancel
       </button>
 
-      <button id="saveRosterButton" class="primary">
+      <button
+        id="saveRosterButton"
+        class="primary">
         Save Roster
       </button>
+
     </div>
 
   </div>
 
 </div>
+
 
 <!-- =========================================================
      POOL MODAL
@@ -916,22 +1003,29 @@ James Martinez"></textarea>
   <div class="modal">
 
     <div class="modal-header">
+
       <h2 id="poolModalTitle">
         Students Remaining
       </h2>
 
-      <button id="closePoolModal" class="close-button">
+      <button
+        id="closePoolModal"
+        class="close-button">
         ×
       </button>
+
     </div>
 
     <div class="modal-body">
+
       <div id="poolList" class="pool-list"></div>
+
     </div>
 
   </div>
 
 </div>
+
 
 <!-- TOAST -->
 
@@ -955,12 +1049,12 @@ James Martinez"></textarea>
   ];
 
   /*
-    Same key as the old Random Name Picker.
-
-    Your existing rosters should carry over automatically.
+    Same storage key as previous versions.
+    Existing rosters should carry over.
   */
 
-  const STORAGE_KEY = "studentNamePicker_v1";
+  const STORAGE_KEY =
+    "studentNamePicker_v1";
 
 
   /* =========================================================
@@ -968,6 +1062,7 @@ James Martinez"></textarea>
   ========================================================= */
 
   function createPeriodData() {
+
     return {
       masterRoster: [],
       pool: [],
@@ -988,11 +1083,24 @@ James Martinez"></textarea>
     const periods = {};
 
     PERIODS.forEach(period => {
-      periods[period] = createPeriodData();
+      periods[period] =
+        createPeriodData();
     });
 
     return {
+
       currentPeriod: "1",
+
+      visiblePeriods: [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+
       periods: periods
     };
   }
@@ -1004,7 +1112,10 @@ James Martinez"></textarea>
 
   function loadState() {
 
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
 
     if (!saved) {
       return createDefaultState();
@@ -1012,7 +1123,8 @@ James Martinez"></textarea>
 
     try {
 
-      const parsed = JSON.parse(saved);
+      const parsed =
+        JSON.parse(saved);
 
       if (!parsed.periods) {
         parsed.periods = {};
@@ -1021,38 +1133,118 @@ James Martinez"></textarea>
       PERIODS.forEach(period => {
 
         if (!parsed.periods[period]) {
-          parsed.periods[period] = createPeriodData();
+          parsed.periods[period] =
+            createPeriodData();
         }
 
-        const data = parsed.periods[period];
+        const data =
+          parsed.periods[period];
 
-        if (!Array.isArray(data.masterRoster)) {
+        if (
+          !Array.isArray(
+            data.masterRoster
+          )
+        ) {
           data.masterRoster = [];
         }
 
-        if (!Array.isArray(data.pool)) {
-          data.pool = [...data.masterRoster];
+        if (
+          !Array.isArray(
+            data.pool
+          )
+        ) {
+          data.pool =
+            [...data.masterRoster];
         }
 
-        if (!Array.isArray(data.history)) {
+        if (
+          !Array.isArray(
+            data.history
+          )
+        ) {
           data.history = [];
         }
 
         if (!data.groupConfig) {
+
           data.groupConfig = {
             method: "size",
             value: 4
           };
+
         }
 
-        if (!Array.isArray(data.groups)) {
+        if (
+          !Array.isArray(
+            data.groups
+          )
+        ) {
           data.groups = [];
         }
 
       });
 
-      if (!PERIODS.includes(parsed.currentPeriod)) {
-        parsed.currentPeriod = "1";
+
+      /*
+        Older versions did not have
+        visiblePeriods, so default to all 7.
+      */
+
+      if (
+        !Array.isArray(
+          parsed.visiblePeriods
+        ) ||
+        parsed.visiblePeriods.length === 0
+      ) {
+
+        parsed.visiblePeriods =
+          [...PERIODS];
+
+      }
+
+
+      /*
+        Remove any invalid saved values.
+      */
+
+      parsed.visiblePeriods =
+        parsed.visiblePeriods.filter(
+          period =>
+            PERIODS.includes(period)
+        );
+
+
+      /*
+        Safety fallback.
+      */
+
+      if (
+        parsed.visiblePeriods.length === 0
+      ) {
+
+        parsed.visiblePeriods =
+          [...PERIODS];
+
+      }
+
+
+      /*
+        If selected period is hidden,
+        switch to first visible period.
+      */
+
+      if (
+        !PERIODS.includes(
+          parsed.currentPeriod
+        ) ||
+        !parsed.visiblePeriods.includes(
+          parsed.currentPeriod
+        )
+      ) {
+
+        parsed.currentPeriod =
+          parsed.visiblePeriods[0];
+
       }
 
       return parsed;
@@ -1067,30 +1259,37 @@ James Martinez"></textarea>
       );
 
       return createDefaultState();
+
     }
   }
 
 
   function saveState() {
+
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify(state)
     );
+
   }
 
 
-  let state = loadState();
+  let state =
+    loadState();
 
 
   /* =========================================================
      TEMPORARY STATE
   ========================================================= */
 
-  let isSpinning = false;
+  let isSpinning =
+    false;
 
-  let pendingStudent = null;
+  let pendingStudent =
+    null;
 
-  let currentMode = "picker";
+  let currentMode =
+    "picker";
 
 
   /* =========================================================
@@ -1098,127 +1297,239 @@ James Martinez"></textarea>
   ========================================================= */
 
   const periodButtons =
-    document.getElementById("periodButtons");
+    document.getElementById(
+      "periodButtons"
+    );
 
   const pickerModeButton =
-    document.getElementById("pickerModeButton");
+    document.getElementById(
+      "pickerModeButton"
+    );
 
   const groupsModeButton =
-    document.getElementById("groupsModeButton");
+    document.getElementById(
+      "groupsModeButton"
+    );
 
   const pickerView =
-    document.getElementById("pickerView");
+    document.getElementById(
+      "pickerView"
+    );
 
   const groupsView =
-    document.getElementById("groupsView");
+    document.getElementById(
+      "groupsView"
+    );
 
   const periodName =
-    document.getElementById("periodName");
+    document.getElementById(
+      "periodName"
+    );
 
   const studentName =
-    document.getElementById("studentName");
+    document.getElementById(
+      "studentName"
+    );
 
   const spinButton =
-    document.getElementById("spinButton");
+    document.getElementById(
+      "spinButton"
+    );
 
   const spinArea =
-    document.getElementById("spinArea");
+    document.getElementById(
+      "spinArea"
+    );
 
   const decisionActions =
-    document.getElementById("decisionActions");
+    document.getElementById(
+      "decisionActions"
+    );
 
   const removeButton =
-    document.getElementById("removeButton");
+    document.getElementById(
+      "removeButton"
+    );
 
   const keepButton =
-    document.getElementById("keepButton");
+    document.getElementById(
+      "keepButton"
+    );
 
   const remainingCount =
-    document.getElementById("remainingCount");
+    document.getElementById(
+      "remainingCount"
+    );
 
   const selectedCount =
-    document.getElementById("selectedCount");
+    document.getElementById(
+      "selectedCount"
+    );
 
   const classSize =
-    document.getElementById("classSize");
+    document.getElementById(
+      "classSize"
+    );
 
   const groupsPeriodName =
-    document.getElementById("groupsPeriodName");
+    document.getElementById(
+      "groupsPeriodName"
+    );
 
   const groupAvailableCount =
-    document.getElementById("groupAvailableCount");
+    document.getElementById(
+      "groupAvailableCount"
+    );
 
   const generateGroupsButton =
-    document.getElementById("generateGroupsButton");
+    document.getElementById(
+      "generateGroupsButton"
+    );
 
   const regenerateButton =
-    document.getElementById("regenerateButton");
+    document.getElementById(
+      "regenerateButton"
+    );
 
   const fullscreenGroupsButton =
-    document.getElementById("fullscreenGroupsButton");
+    document.getElementById(
+      "fullscreenGroupsButton"
+    );
 
   const groupsResultSection =
-    document.getElementById("groupsResultSection");
+    document.getElementById(
+      "groupsResultSection"
+    );
 
   const groupsGrid =
-    document.getElementById("groupsGrid");
+    document.getElementById(
+      "groupsGrid"
+    );
 
   const groupFullscreenArea =
-    document.getElementById("groupFullscreenArea");
+    document.getElementById(
+      "groupFullscreenArea"
+    );
 
   const fullscreenGroupTitle =
-    document.getElementById("fullscreenGroupTitle");
+    document.getElementById(
+      "fullscreenGroupTitle"
+    );
 
   const fullscreenGroupCount =
-    document.getElementById("fullscreenGroupCount");
+    document.getElementById(
+      "fullscreenGroupCount"
+    );
 
   const groupChoiceButtons =
-    document.querySelectorAll(".group-choice");
+    document.querySelectorAll(
+      ".group-choice"
+    );
+
+  const settingsButton =
+    document.getElementById(
+      "settingsButton"
+    );
+
+  const settingsModal =
+    document.getElementById(
+      "settingsModal"
+    );
+
+  const closeSettingsModal =
+    document.getElementById(
+      "closeSettingsModal"
+    );
+
+  const cancelSettingsButton =
+    document.getElementById(
+      "cancelSettingsButton"
+    );
+
+  const saveSettingsButton =
+    document.getElementById(
+      "saveSettingsButton"
+    );
+
+  const periodVisibilityOptions =
+    document.getElementById(
+      "periodVisibilityOptions"
+    );
 
   const rosterButton =
-    document.getElementById("rosterButton");
+    document.getElementById(
+      "rosterButton"
+    );
 
   const poolButton =
-    document.getElementById("poolButton");
+    document.getElementById(
+      "poolButton"
+    );
 
   const undoButton =
-    document.getElementById("undoButton");
+    document.getElementById(
+      "undoButton"
+    );
 
   const resetButton =
-    document.getElementById("resetButton");
+    document.getElementById(
+      "resetButton"
+    );
 
   const rosterModal =
-    document.getElementById("rosterModal");
+    document.getElementById(
+      "rosterModal"
+    );
 
   const rosterModalTitle =
-    document.getElementById("rosterModalTitle");
+    document.getElementById(
+      "rosterModalTitle"
+    );
 
   const rosterInput =
-    document.getElementById("rosterInput");
+    document.getElementById(
+      "rosterInput"
+    );
 
   const saveRosterButton =
-    document.getElementById("saveRosterButton");
+    document.getElementById(
+      "saveRosterButton"
+    );
 
   const cancelRosterButton =
-    document.getElementById("cancelRosterButton");
+    document.getElementById(
+      "cancelRosterButton"
+    );
 
   const closeRosterModal =
-    document.getElementById("closeRosterModal");
+    document.getElementById(
+      "closeRosterModal"
+    );
 
   const poolModal =
-    document.getElementById("poolModal");
+    document.getElementById(
+      "poolModal"
+    );
 
   const poolModalTitle =
-    document.getElementById("poolModalTitle");
+    document.getElementById(
+      "poolModalTitle"
+    );
 
   const poolList =
-    document.getElementById("poolList");
+    document.getElementById(
+      "poolList"
+    );
 
   const closePoolModal =
-    document.getElementById("closePoolModal");
+    document.getElementById(
+      "closePoolModal"
+    );
 
   const toast =
-    document.getElementById("toast");
+    document.getElementById(
+      "toast"
+    );
 
 
   /* =========================================================
@@ -1226,52 +1537,81 @@ James Martinez"></textarea>
   ========================================================= */
 
   function currentData() {
-    return state.periods[state.currentPeriod];
+
+    return state.periods[
+      state.currentPeriod
+    ];
+
   }
 
 
   function randomItem(array) {
+
     return array[
-      Math.floor(Math.random() * array.length)
+      Math.floor(
+        Math.random() *
+        array.length
+      )
     ];
+
   }
 
 
   function wait(milliseconds) {
-    return new Promise(resolve => {
-      setTimeout(resolve, milliseconds);
-    });
+
+    return new Promise(
+      resolve => {
+        setTimeout(
+          resolve,
+          milliseconds
+        );
+      }
+    );
+
   }
 
 
   function showToast(message) {
 
-    toast.textContent = message;
+    toast.textContent =
+      message;
 
-    toast.classList.add("show");
+    toast.classList.add(
+      "show"
+    );
 
-    clearTimeout(showToast.timeout);
+    clearTimeout(
+      showToast.timeout
+    );
 
     showToast.timeout =
       setTimeout(() => {
-        toast.classList.remove("show");
+
+        toast.classList.remove(
+          "show"
+        );
+
       }, 1800);
+
   }
 
 
   function shuffleArray(array) {
 
-    const shuffled = [...array];
+    const shuffled =
+      [...array];
 
     for (
-      let i = shuffled.length - 1;
+      let i =
+        shuffled.length - 1;
       i > 0;
       i--
     ) {
 
       const j =
         Math.floor(
-          Math.random() * (i + 1)
+          Math.random() *
+          (i + 1)
         );
 
       [
@@ -1285,6 +1625,7 @@ James Martinez"></textarea>
     }
 
     return shuffled;
+
   }
 
 
@@ -1294,7 +1635,8 @@ James Martinez"></textarea>
 
   function setMode(mode) {
 
-    currentMode = mode;
+    currentMode =
+      mode;
 
     pickerModeButton.classList.toggle(
       "selected",
@@ -1317,6 +1659,7 @@ James Martinez"></textarea>
         : "none";
 
     updateUI();
+
   }
 
 
@@ -1326,47 +1669,61 @@ James Martinez"></textarea>
 
   function buildPeriodButtons() {
 
-    periodButtons.innerHTML = "";
+    periodButtons.innerHTML =
+      "";
 
-    PERIODS.forEach(period => {
+    state.visiblePeriods.forEach(
+      period => {
 
-      const button =
-        document.createElement("button");
+        const button =
+          document.createElement(
+            "button"
+          );
 
-      button.textContent =
-        `Period ${period}`;
+        button.textContent =
+          `Period ${period}`;
 
-      if (
-        period === state.currentPeriod
-      ) {
-        button.classList.add("selected");
-      }
+        if (
+          period ===
+          state.currentPeriod
+        ) {
 
-      button.addEventListener(
-        "click",
-        () => {
+          button.classList.add(
+            "selected"
+          );
 
-          if (isSpinning) {
-            return;
-          }
-
-          state.currentPeriod =
-            period;
-
-          pendingStudent =
-            null;
-
-          saveState();
-
-          buildPeriodButtons();
-
-          updateUI();
         }
-      );
 
-      periodButtons.appendChild(button);
+        button.addEventListener(
+          "click",
+          () => {
 
-    });
+            if (isSpinning) {
+              return;
+            }
+
+            state.currentPeriod =
+              period;
+
+            pendingStudent =
+              null;
+
+            saveState();
+
+            buildPeriodButtons();
+
+            updateUI();
+
+          }
+        );
+
+        periodButtons.appendChild(
+          button
+        );
+
+      }
+    );
+
   }
 
 
@@ -1391,8 +1748,6 @@ James Martinez"></textarea>
         0
       );
 
-    /* PICKER */
-
     periodName.textContent =
       `Period ${state.currentPeriod}`;
 
@@ -1404,7 +1759,9 @@ James Martinez"></textarea>
 
     classSize.textContent =
       `${total} student${
-        total === 1 ? "" : "s"
+        total === 1
+          ? ""
+          : "s"
       }`;
 
     undoButton.disabled =
@@ -1416,14 +1773,14 @@ James Martinez"></textarea>
     poolButton.disabled =
       total === 0;
 
-    /* GROUPS */
-
     groupsPeriodName.textContent =
       `Make Groups — Period ${state.currentPeriod}`;
 
     groupAvailableCount.textContent =
       `${remaining} student${
-        remaining === 1 ? "" : "s"
+        remaining === 1
+          ? ""
+          : "s"
       } available from the current pool`;
 
     generateGroupsButton.disabled =
@@ -1432,8 +1789,6 @@ James Martinez"></textarea>
     updateGroupChoiceButtons();
 
     renderGroups();
-
-    /* DON'T INTERRUPT SPIN */
 
     if (isSpinning) {
       return;
@@ -1452,6 +1807,7 @@ James Martinez"></textarea>
         pendingStudent;
 
       return;
+
     }
 
     decisionActions.classList.remove(
@@ -1473,6 +1829,7 @@ James Martinez"></textarea>
         false;
 
       return;
+
     }
 
     if (remaining === 0) {
@@ -1487,6 +1844,7 @@ James Martinez"></textarea>
         false;
 
       return;
+
     }
 
     studentName.textContent =
@@ -1497,6 +1855,7 @@ James Martinez"></textarea>
 
     spinButton.disabled =
       false;
+
   }
 
 
@@ -1516,6 +1875,7 @@ James Martinez"></textarea>
       openRosterEditor();
 
       return;
+
     }
 
     if (
@@ -1525,6 +1885,7 @@ James Martinez"></textarea>
       resetPool();
 
       return;
+
     }
 
     if (
@@ -1534,12 +1895,16 @@ James Martinez"></textarea>
       return;
     }
 
-    isSpinning = true;
+    isSpinning =
+      true;
 
-    spinButton.disabled = true;
+    spinButton.disabled =
+      true;
 
     const winner =
-      randomItem(data.pool);
+      randomItem(
+        data.pool
+      );
 
     const timings = [
       40,
@@ -1559,7 +1924,8 @@ James Martinez"></textarea>
       190
     ];
 
-    let previousName = null;
+    let previousName =
+      null;
 
     for (
       let i = 0;
@@ -1568,24 +1934,32 @@ James Martinez"></textarea>
     ) {
 
       let cyclingName =
-        randomItem(data.pool);
+        randomItem(
+          data.pool
+        );
 
       if (
         data.pool.length > 1
       ) {
 
-        let safety = 0;
+        let safety =
+          0;
 
         while (
-          cyclingName === previousName &&
+          cyclingName ===
+            previousName &&
           safety < 10
         ) {
 
           cyclingName =
-            randomItem(data.pool);
+            randomItem(
+              data.pool
+            );
 
           safety++;
+
         }
+
       }
 
       studentName.classList.add(
@@ -1598,14 +1972,19 @@ James Martinez"></textarea>
       previousName =
         cyclingName;
 
-      await wait(timings[i]);
+      await wait(
+        timings[i]
+      );
 
       studentName.classList.remove(
         "cycling"
       );
+
     }
 
-    await wait(100);
+    await wait(
+      100
+    );
 
     studentName.textContent =
       winner;
@@ -1617,6 +1996,7 @@ James Martinez"></textarea>
       false;
 
     updateUI();
+
   }
 
 
@@ -1634,23 +2014,27 @@ James Martinez"></textarea>
       currentData();
 
     data.history.push({
-      action: "remove",
-      student: pendingStudent,
-      previousPool: [...data.pool]
+
+      action:
+        "remove",
+
+      student:
+        pendingStudent,
+
+      previousPool:
+        [...data.pool]
+
     });
 
     data.pool =
       data.pool.filter(
         student =>
-          student !== pendingStudent
+          student !==
+          pendingStudent
       );
 
-    /*
-      Current groups are now stale because
-      the available pool changed.
-    */
-
-    data.groups = [];
+    data.groups =
+      [];
 
     const removedStudent =
       pendingStudent;
@@ -1665,6 +2049,7 @@ James Martinez"></textarea>
     showToast(
       `${removedStudent} removed from pool`
     );
+
   }
 
 
@@ -1682,9 +2067,16 @@ James Martinez"></textarea>
       currentData();
 
     data.history.push({
-      action: "keep",
-      student: pendingStudent,
-      previousPool: [...data.pool]
+
+      action:
+        "keep",
+
+      student:
+        pendingStudent,
+
+      previousPool:
+        [...data.pool]
+
     });
 
     const keptStudent =
@@ -1700,6 +2092,7 @@ James Martinez"></textarea>
     showToast(
       `${keptStudent} stays in the pool`
     );
+
   }
 
 
@@ -1719,14 +2112,20 @@ James Martinez"></textarea>
     }
 
     data.history.push({
-      action: "reset",
-      previousPool: [...data.pool]
+
+      action:
+        "reset",
+
+      previousPool:
+        [...data.pool]
+
     });
 
     data.pool =
       [...data.masterRoster];
 
-    data.groups = [];
+    data.groups =
+      [];
 
     pendingStudent =
       null;
@@ -1738,6 +2137,7 @@ James Martinez"></textarea>
     showToast(
       `Period ${state.currentPeriod} pool reset`
     );
+
   }
 
 
@@ -1764,17 +2164,14 @@ James Martinez"></textarea>
       );
 
       return;
+
     }
 
     data.pool =
       [...lastAction.previousPool];
 
-    /*
-      Pool changed, so old groups
-      should no longer be shown.
-    */
-
-    data.groups = [];
+    data.groups =
+      [];
 
     pendingStudent =
       null;
@@ -1784,7 +2181,8 @@ James Martinez"></textarea>
     updateUI();
 
     if (
-      lastAction.action === "remove"
+      lastAction.action ===
+      "remove"
     ) {
 
       showToast(
@@ -1794,7 +2192,8 @@ James Martinez"></textarea>
     }
 
     else if (
-      lastAction.action === "reset"
+      lastAction.action ===
+      "reset"
     ) {
 
       showToast(
@@ -1810,6 +2209,7 @@ James Martinez"></textarea>
       );
 
     }
+
   }
 
 
@@ -1829,18 +2229,24 @@ James Martinez"></textarea>
           button.dataset.method;
 
         const value =
-          Number(button.dataset.value);
+          Number(
+            button.dataset.value
+          );
 
         const selected =
-          data.groupConfig.method === method &&
-          data.groupConfig.value === value;
+          data.groupConfig.method ===
+            method &&
+          data.groupConfig.value ===
+            value;
 
         button.classList.toggle(
           "selected",
           selected
         );
+
       }
     );
+
   }
 
 
@@ -1855,6 +2261,7 @@ James Martinez"></textarea>
             currentData();
 
           data.groupConfig = {
+
             method:
               button.dataset.method,
 
@@ -1862,20 +2269,19 @@ James Martinez"></textarea>
               Number(
                 button.dataset.value
               )
+
           };
 
-          /*
-            Changing configuration hides
-            existing groups until regenerated.
-          */
-
-          data.groups = [];
+          data.groups =
+            [];
 
           saveState();
 
           updateUI();
+
         }
       );
+
     }
   );
 
@@ -1896,6 +2302,7 @@ James Martinez"></textarea>
       openRosterEditor();
 
       return;
+
     }
 
     if (
@@ -1907,6 +2314,7 @@ James Martinez"></textarea>
       );
 
       return;
+
     }
 
     const students =
@@ -1919,19 +2327,9 @@ James Martinez"></textarea>
 
     let numberOfGroups;
 
-    /*
-      GROUP SIZE
-
-      Example:
-      31 students with size 4 =
-      8 groups.
-
-      Students are then distributed evenly,
-      avoiding a tiny leftover group.
-    */
-
     if (
-      config.method === "size"
+      config.method ===
+      "size"
     ) {
 
       numberOfGroups =
@@ -1939,11 +2337,8 @@ James Martinez"></textarea>
           students.length /
           config.value
         );
-    }
 
-    /*
-      NUMBER OF GROUPS
-    */
+    }
 
     else {
 
@@ -1952,28 +2347,31 @@ James Martinez"></textarea>
           config.value,
           students.length
         );
+
     }
 
     const groups =
       Array.from(
-        { length: numberOfGroups },
+        {
+          length:
+            numberOfGroups
+        },
         () => []
       );
-
-    /*
-      Round-robin distribution keeps
-      group sizes as even as possible.
-    */
 
     students.forEach(
       (student, index) => {
 
         const groupIndex =
-          index % numberOfGroups;
+          index %
+          numberOfGroups;
 
-        groups[groupIndex].push(
+        groups[
+          groupIndex
+        ].push(
           student
         );
+
       }
     );
 
@@ -1988,6 +2386,7 @@ James Martinez"></textarea>
       behavior: "smooth",
       block: "start"
     });
+
   }
 
 
@@ -2012,6 +2411,7 @@ James Martinez"></textarea>
         "none";
 
       return;
+
     }
 
     groupsResultSection.style.display =
@@ -2027,13 +2427,17 @@ James Martinez"></textarea>
       (group, index) => {
 
         const card =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         card.className =
           "group-card";
 
         const header =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         header.className =
           "group-card-header";
@@ -2042,36 +2446,49 @@ James Martinez"></textarea>
           `Group ${index + 1}`;
 
         const studentsContainer =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         studentsContainer.className =
           "group-students";
 
-        group.forEach(student => {
+        group.forEach(
+          student => {
 
-          const studentRow =
-            document.createElement("div");
+            const studentRow =
+              document.createElement(
+                "div"
+              );
 
-          studentRow.className =
-            "group-student";
+            studentRow.className =
+              "group-student";
 
-          studentRow.textContent =
-            student;
+            studentRow.textContent =
+              student;
 
-          studentsContainer.appendChild(
-            studentRow
-          );
-        });
+            studentsContainer.appendChild(
+              studentRow
+            );
 
-        card.appendChild(header);
+          }
+        );
+
+        card.appendChild(
+          header
+        );
 
         card.appendChild(
           studentsContainer
         );
 
-        groupsGrid.appendChild(card);
+        groupsGrid.appendChild(
+          card
+        );
+
       }
     );
+
   }
 
 
@@ -2088,6 +2505,7 @@ James Martinez"></textarea>
       await document.exitFullscreen();
 
       return;
+
     }
 
     if (
@@ -2108,7 +2526,9 @@ James Martinez"></textarea>
         "Fullscreen unavailable:",
         error
       );
+
     }
+
   }
 
 
@@ -2120,8 +2540,143 @@ James Martinez"></textarea>
         document.fullscreenElement
           ? "Exit Full Screen"
           : "📺 Full Screen";
+
     }
   );
+
+
+  /* =========================================================
+     SETTINGS MODAL
+  ========================================================= */
+
+  function openSettings() {
+
+    periodVisibilityOptions.innerHTML =
+      "";
+
+    PERIODS.forEach(
+      period => {
+
+        const label =
+          document.createElement(
+            "label"
+          );
+
+        label.className =
+          "period-visibility-option";
+
+        const checkbox =
+          document.createElement(
+            "input"
+          );
+
+        checkbox.type =
+          "checkbox";
+
+        checkbox.value =
+          period;
+
+        checkbox.checked =
+          state.visiblePeriods.includes(
+            period
+          );
+
+        const text =
+          document.createElement(
+            "span"
+          );
+
+        text.textContent =
+          `Period ${period}`;
+
+        label.appendChild(
+          checkbox
+        );
+
+        label.appendChild(
+          text
+        );
+
+        periodVisibilityOptions.appendChild(
+          label
+        );
+
+      }
+    );
+
+    settingsModal.classList.add(
+      "visible"
+    );
+
+  }
+
+
+  function closeSettings() {
+
+    settingsModal.classList.remove(
+      "visible"
+    );
+
+  }
+
+
+  function saveSettings() {
+
+    const checked =
+      periodVisibilityOptions.querySelectorAll(
+        'input[type="checkbox"]:checked'
+      );
+
+    const visible =
+      Array.from(
+        checked
+      ).map(
+        checkbox =>
+          checkbox.value
+      );
+
+    if (
+      visible.length === 0
+    ) {
+
+      showToast(
+        "At least one period must remain visible"
+      );
+
+      return;
+
+    }
+
+    state.visiblePeriods =
+      visible;
+
+    if (
+      !state.visiblePeriods.includes(
+        state.currentPeriod
+      )
+    ) {
+
+      state.currentPeriod =
+        state.visiblePeriods[0];
+
+      pendingStudent =
+        null;
+
+    }
+
+    saveState();
+
+    closeSettings();
+
+    buildPeriodButtons();
+
+    updateUI();
+
+    showToast(
+      "Settings saved"
+    );
+
+  }
 
 
   /* =========================================================
@@ -2137,13 +2692,16 @@ James Martinez"></textarea>
       `Period ${state.currentPeriod} Roster`;
 
     rosterInput.value =
-      data.masterRoster.join("\n");
+      data.masterRoster.join(
+        "\n"
+      );
 
     rosterModal.classList.add(
       "visible"
     );
 
     rosterInput.focus();
+
   }
 
 
@@ -2152,6 +2710,7 @@ James Martinez"></textarea>
     rosterModal.classList.remove(
       "visible"
     );
+
   }
 
 
@@ -2159,13 +2718,17 @@ James Martinez"></textarea>
 
     let names =
       rosterInput.value
-        .split(/\r?\n/)
-        .map(name => name.trim())
-        .filter(Boolean);
 
-    /*
-      Remove exact duplicate lines.
-    */
+        .split(/\r?\n/)
+
+        .map(
+          name =>
+            name.trim()
+        )
+
+        .filter(
+          Boolean
+        );
 
     names =
       [...new Set(names)];
@@ -2197,6 +2760,7 @@ James Martinez"></textarea>
     showToast(
       `${names.length} students saved`
     );
+
   }
 
 
@@ -2220,7 +2784,9 @@ James Martinez"></textarea>
     ) {
 
       const message =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       message.className =
         "empty-message";
@@ -2239,29 +2805,38 @@ James Martinez"></textarea>
       const sorted =
         [...data.pool].sort(
           (a, b) =>
-            a.localeCompare(b)
+            a.localeCompare(
+              b
+            )
         );
 
-      sorted.forEach(name => {
+      sorted.forEach(
+        name => {
 
-        const item =
-          document.createElement("div");
+          const item =
+            document.createElement(
+              "div"
+            );
 
-        item.className =
-          "pool-name";
+          item.className =
+            "pool-name";
 
-        item.textContent =
-          name;
+          item.textContent =
+            name;
 
-        poolList.appendChild(
-          item
-        );
-      });
+          poolList.appendChild(
+            item
+          );
+
+        }
+      );
+
     }
 
     poolModal.classList.add(
       "visible"
     );
+
   }
 
 
@@ -2270,6 +2845,7 @@ James Martinez"></textarea>
     poolModal.classList.remove(
       "visible"
     );
+
   }
 
 
@@ -2279,78 +2855,123 @@ James Martinez"></textarea>
 
   pickerModeButton.addEventListener(
     "click",
-    () => setMode("picker")
+    () =>
+      setMode(
+        "picker"
+      )
   );
+
 
   groupsModeButton.addEventListener(
     "click",
-    () => setMode("groups")
+    () =>
+      setMode(
+        "groups"
+      )
   );
+
 
   spinButton.addEventListener(
     "click",
     spin
   );
 
+
   removeButton.addEventListener(
     "click",
     removePendingStudent
   );
+
 
   keepButton.addEventListener(
     "click",
     keepPendingStudent
   );
 
+
   generateGroupsButton.addEventListener(
     "click",
     generateGroups
   );
+
 
   regenerateButton.addEventListener(
     "click",
     generateGroups
   );
 
+
   fullscreenGroupsButton.addEventListener(
     "click",
     toggleGroupsFullscreen
   );
+
+
+  settingsButton.addEventListener(
+    "click",
+    openSettings
+  );
+
+
+  closeSettingsModal.addEventListener(
+    "click",
+    closeSettings
+  );
+
+
+  cancelSettingsButton.addEventListener(
+    "click",
+    closeSettings
+  );
+
+
+  saveSettingsButton.addEventListener(
+    "click",
+    saveSettings
+  );
+
 
   rosterButton.addEventListener(
     "click",
     openRosterEditor
   );
 
+
   poolButton.addEventListener(
     "click",
     openPoolViewer
   );
+
 
   undoButton.addEventListener(
     "click",
     undoLastAction
   );
 
+
   resetButton.addEventListener(
     "click",
     resetPool
   );
+
 
   saveRosterButton.addEventListener(
     "click",
     saveRoster
   );
 
+
   cancelRosterButton.addEventListener(
     "click",
     closeRosterEditor
   );
 
+
   closeRosterModal.addEventListener(
     "click",
     closeRosterEditor
   );
+
 
   closePoolModal.addEventListener(
     "click",
@@ -2358,29 +2979,57 @@ James Martinez"></textarea>
   );
 
 
-  /* CLICK OUTSIDE MODALS */
+  /* =========================================================
+     CLICK OUTSIDE MODALS
+  ========================================================= */
+
+  settingsModal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target ===
+        settingsModal
+      ) {
+
+        closeSettings();
+
+      }
+
+    }
+  );
+
 
   rosterModal.addEventListener(
     "click",
     event => {
 
       if (
-        event.target === rosterModal
+        event.target ===
+        rosterModal
       ) {
+
         closeRosterEditor();
+
       }
+
     }
   );
+
 
   poolModal.addEventListener(
     "click",
     event => {
 
       if (
-        event.target === poolModal
+        event.target ===
+        poolModal
       ) {
+
         closePoolViewer();
+
       }
+
     }
   );
 
@@ -2394,42 +3043,60 @@ James Martinez"></textarea>
     event => {
 
       const isTyping =
-        document.activeElement.tagName ===
+        document.activeElement
+          .tagName ===
         "TEXTAREA";
 
       /*
-        SPACEBAR selects student only
-        while Pick a Student mode is open.
+        Spacebar selects a student
+        while Picker mode is open.
       */
 
       if (
-        event.code === "Space" &&
-        currentMode === "picker" &&
+        event.code ===
+          "Space" &&
+        currentMode ===
+          "picker" &&
         !isTyping &&
-        !rosterModal.classList.contains("visible") &&
-        !poolModal.classList.contains("visible")
+        !settingsModal.classList.contains(
+          "visible"
+        ) &&
+        !rosterModal.classList.contains(
+          "visible"
+        ) &&
+        !poolModal.classList.contains(
+          "visible"
+        )
       ) {
 
         event.preventDefault();
 
         if (!pendingStudent) {
+
           spin();
+
         }
+
       }
 
+
       /*
-        Escape closes normal modals.
-        Browser also handles Escape for fullscreen.
+        Escape closes all modals.
       */
 
       if (
-        event.key === "Escape"
+        event.key ===
+        "Escape"
       ) {
+
+        closeSettings();
 
         closeRosterEditor();
 
         closePoolViewer();
+
       }
+
     }
   );
 
@@ -2440,7 +3107,9 @@ James Martinez"></textarea>
 
   buildPeriodButtons();
 
-  setMode("picker");
+  setMode(
+    "picker"
+  );
 
   updateUI();
 
